@@ -23,4 +23,3 @@ rootProject.name = "Shopr"
 include(":app")
 include(":data")
 include(":domain")
-include(":features")
