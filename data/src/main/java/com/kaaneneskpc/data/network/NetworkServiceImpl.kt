@@ -2,7 +2,6 @@ package com.kaaneneskpc.data.network
 
 import com.kaaneneskpc.data.model.DataProductModel
 import com.kaaneneskpc.domain.model.Product
-import com.kaaneneskpc.domain.model.ProductListModel
 import com.kaaneneskpc.domain.network.NetworkService
 import com.kaaneneskpc.domain.network.ResultWrapper
 import io.ktor.client.HttpClient
@@ -19,8 +18,8 @@ import io.ktor.http.contentType
 import io.ktor.util.InternalAPI
 import io.ktor.utils.io.errors.IOException
 
-class NetworkServiceImpl(val client: HttpClient): NetworkService {
-    override suspend fun getProducts(category: Int?): ResultWrapper<List<Product>> {
+class NetworkServiceImpl(val client: HttpClient) : NetworkService {
+    override suspend fun getProducts(): ResultWrapper<List<Product>> {
         return makeWebRequest(
             url = "https://fakestoreapi.com/products",
             method = HttpMethod.Get,
@@ -30,6 +29,7 @@ class NetworkServiceImpl(val client: HttpClient): NetworkService {
         )
     }
 
+    @OptIn(InternalAPI::class)
     suspend inline fun <reified T, R> makeWebRequest(
         url: String,
         method: HttpMethod,
@@ -55,7 +55,7 @@ class NetworkServiceImpl(val client: HttpClient): NetworkService {
                 }
                 // Set body for POST, PUT, etc.
                 if (body != null) {
-                    setBody(body)
+                    this.body = body
                 }
 
                 // Set content type
@@ -73,4 +73,5 @@ class NetworkServiceImpl(val client: HttpClient): NetworkService {
             ResultWrapper.Failure(e)
         }
     }
+
 }
