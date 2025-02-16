@@ -4,7 +4,7 @@ import com.kaaneneskpc.domain.model.Product
 import com.kaaneneskpc.domain.model.ProductListModel
 
 interface NetworkService {
-    suspend fun getProducts(): ResultWrapper<List<Product>>
+    suspend fun getProducts(category: String?): ResultWrapper<List<Product>>
 }
 
 sealed class ResultWrapper<out T> {

@@ -15,20 +15,31 @@ class HomeViewModel(private val getProductsUseCase: GetProductsUseCase): ViewMod
     val uiState = _uiState.asStateFlow()
 
     init {
-        getProducts()
+        getAllProducts()
     }
 
-    private fun getProducts() {
+    private fun getAllProducts() {
         viewModelScope.launch {
             _uiState.value = HomeScreenEvent.Loading
-            getProductsUseCase.execute().let { result ->
-                when(result) {
-                    is ResultWrapper.Success -> {
-                        _uiState.value = HomeScreenEvent.Success(result.value)
-                    }
-                    is ResultWrapper.Failure -> {
-                        _uiState.value = HomeScreenEvent.Error(result.exception.message ?: "An error occurred")
-                    }
+            val featuredProducts = getProducts("electronics")
+            val popularProducts = getProducts("jewelery")
+            if(featuredProducts.isEmpty() || popularProducts.isEmpty()) {
+                _uiState.value = HomeScreenEvent.Error("Error fetching products")
+                return@launch
+            }
+            _uiState.value = HomeScreenEvent.Success(featuredProducts, popularProducts)
+        }
+    }
+
+    private suspend fun getProducts(category: String?): List<Product> {
+        getProductsUseCase.execute(category).let { result ->
+            when (result) {
+                is ResultWrapper.Success -> {
+                    return result.value
+                }
+
+                is ResultWrapper.Failure -> {
+                    return emptyList()
                 }
             }
         }
@@ -38,6 +49,6 @@ class HomeViewModel(private val getProductsUseCase: GetProductsUseCase): ViewMod
 
 sealed class HomeScreenEvent {
     data object Loading: HomeScreenEvent()
-    data class Success(val data: List<Product>): HomeScreenEvent()
+    data class Success(val featured: List<Product>, val popularProducts: List<Product>): HomeScreenEvent()
     data class Error(val message: String): HomeScreenEvent()
 }
