@@ -42,6 +42,9 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     val loading = remember { mutableStateOf(false) }
     val error = remember { mutableStateOf<String?>(null) }
+    val featured = remember { mutableStateOf<List<Product>>(emptyList()) }
+    val popularProducts = remember { mutableStateOf<List<Product>>(emptyList()) }
+    val categories = remember { mutableStateOf<List<String>>(emptyList()) }
 
 
     Scaffold {
@@ -55,9 +58,11 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
                 }
 
                 is HomeScreenEvent.Success -> {
+                    featured.value = uiState.featured
+                    popularProducts.value = uiState.popularProducts
+                    categories.value = uiState.categories
                     loading.value = false
                     error.value = null
-                    HomeContent(uiState.featured, uiState.popularProducts, uiState.categories)
                 }
 
                 is HomeScreenEvent.Error -> {
@@ -66,7 +71,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
                     error.value = errorMessage
                 }
             }
-
+            HomeContent(featured.value, popularProducts.value, categories.value, loading.value, error.value)
         }
     }
 }
