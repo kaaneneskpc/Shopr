@@ -1,5 +1,8 @@
 package com.kaaneneskpc.shopr.ui.feature.home.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,9 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kaaneneskpc.domain.model.Product
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 @Composable
 fun HomeProductRow(products: List<Product>, title: String) {
+    val isVisible = remember { mutableStateOf(false) }
     Column {
         Box(
             modifier = Modifier
@@ -44,8 +51,14 @@ fun HomeProductRow(products: List<Product>, title: String) {
         }
         Spacer(modifier = Modifier.size(8.dp))
         LazyRow {
-            items(products) { product ->
-                ProductItem(product = product) {}
+            items(products, key = { it.id }) { product ->
+                LaunchedEffect(true) { isVisible.value = true }
+                AnimatedVisibility(
+                    visible = isVisible.value,
+                    enter = fadeIn() + expandVertically()
+                ) {
+                    ProductItem(product = product) {}
+                }
             }
         }
     }

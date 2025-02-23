@@ -3,6 +3,7 @@ package com.kaaneneskpc.shopr.ui.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaaneneskpc.domain.model.Product
+import com.kaaneneskpc.domain.model.ProductListModel
 import com.kaaneneskpc.domain.network.ResultWrapper
 import com.kaaneneskpc.domain.usecase.GetCategoriesUseCase
 import com.kaaneneskpc.domain.usecase.GetProductsUseCase
@@ -22,8 +23,8 @@ class HomeViewModel(private val getProductsUseCase: GetProductsUseCase, private 
     private fun getAllProducts() {
         viewModelScope.launch {
             _uiState.value = HomeScreenEvent.Loading
-            val featuredProducts = getProducts("electronics")
-            val popularProducts = getProducts("jewelery")
+            val featuredProducts = getProducts(1)
+            val popularProducts = getProducts(2)
             val categories = getCategory()
             if(featuredProducts.isEmpty() && popularProducts.isEmpty() && categories.isNotEmpty()) {
                 _uiState.value = HomeScreenEvent.Error("Error fetching products")
@@ -37,7 +38,7 @@ class HomeViewModel(private val getProductsUseCase: GetProductsUseCase, private 
         getCategoriesUseCase.execute().let { result ->
             when (result) {
                 is ResultWrapper.Success -> {
-                    return result.value
+                    return result.value.category.map { it.title }
                 }
 
                 is ResultWrapper.Failure -> {
@@ -47,11 +48,11 @@ class HomeViewModel(private val getProductsUseCase: GetProductsUseCase, private 
         }
     }
 
-    private suspend fun getProducts(category: String?): List<Product> {
+    private suspend fun getProducts(category: Int?): List<Product> {
         getProductsUseCase.execute(category).let { result ->
             when (result) {
                 is ResultWrapper.Success -> {
-                    return result.value
+                    return result.value.products
                 }
 
                 is ResultWrapper.Failure -> {

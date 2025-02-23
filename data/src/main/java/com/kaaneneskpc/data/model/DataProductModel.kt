@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class DataProductModel(
-    val id: Long,
+    val categoryId: Int,
+    val id: Int,
     val title: String,
     val price: Double,
-    val category: String,
     val description: String,
     val image: String
 ) {
@@ -17,7 +17,7 @@ class DataProductModel(
         id = id,
         title = title,
         price = price,
-        category = category,
+        categoryId = categoryId,
         description = description,
         image = image
     )

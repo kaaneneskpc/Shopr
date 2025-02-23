@@ -7,7 +7,7 @@ import com.kaaneneskpc.domain.network.ResultWrapper
 import com.kaaneneskpc.domain.repository.ProductRepository
 
 class ProductRepositoryImpl(private val networkService: NetworkService) : ProductRepository {
-    override suspend fun getProducts(category: String?): ResultWrapper<List<Product>> {
+    override suspend fun getProducts(category: Int?): ResultWrapper<ProductListModel> {
         return networkService.getProducts(category)
     }
 }
