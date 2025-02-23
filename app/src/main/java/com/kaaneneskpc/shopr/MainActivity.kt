@@ -63,16 +63,21 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-
             }
+
         }
     }
+}
+
+sealed class BottomNavItems(val route: String, val title: String, val icon: Int) {
+    object Home : BottomNavItems("home", "Home", icon = R.drawable.ic_home)
+    object Cart : BottomNavItems("cart", "Cart", icon = R.drawable.ic_cart)
+    object Profile : BottomNavItems("profile", "Profile", icon = R.drawable.ic_profile_bn)
 }
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     NavigationBar {
-        //current route
         val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
         val items = listOf(
             BottomNavItems.Home,
@@ -99,21 +104,18 @@ fun BottomNavigationBar(navController: NavController) {
                     Image(
                         painter = painterResource(id = item.icon),
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(if (currentRoute == item.route) Color.Green else Color.Gray)
+                        colorFilter = ColorFilter.tint(
+                            if (currentRoute == item.route) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
-                }, colors = NavigationBarItemDefaults.colors().copy(
+                },
+                colors = NavigationBarItemDefaults.colors().copy(
                     selectedIconColor = MaterialTheme.colorScheme.primary,
                     selectedTextColor = MaterialTheme.colorScheme.primary,
-                    unselectedTextColor = Color.Gray,
-                    unselectedIconColor = Color.Gray
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
         }
     }
-}
-
-sealed class BottomNavItems(val route: String, val title: String, val icon: Int) {
-    object Home : BottomNavItems("home", "Home", icon = R.drawable.ic_home)
-    object Cart : BottomNavItems("cart", "Cart", icon = R.drawable.ic_cart)
-    object Profile : BottomNavItems("profile", "Profile", icon = R.drawable.ic_profile_bn)
 }
