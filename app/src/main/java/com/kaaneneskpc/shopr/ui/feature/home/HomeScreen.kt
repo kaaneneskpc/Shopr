@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.kaaneneskpc.domain.model.Product
+import com.kaaneneskpc.shopr.model.UiProductModel
+import com.kaaneneskpc.shopr.navigation.ProductDetails
 import com.kaaneneskpc.shopr.ui.feature.home.components.HomeCategoriesRow
 import com.kaaneneskpc.shopr.ui.feature.home.components.HomeProductRow
 import com.kaaneneskpc.shopr.ui.feature.home.components.ProfileHeader
@@ -49,7 +51,9 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
 
     Scaffold {
         Surface(
-            modifier = Modifier.fillMaxSize().padding(it)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
         ) {
             when (uiState) {
                 is HomeScreenEvent.Loading -> {
@@ -71,7 +75,16 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
                     error.value = errorMessage
                 }
             }
-            HomeContent(featured.value, popularProducts.value, categories.value, loading.value, error.value)
+            HomeContent(
+                featured.value,
+                popularProducts.value,
+                categories.value,
+                loading.value,
+                error.value,
+                onClick = { product ->
+                    navController.navigate(ProductDetails(UiProductModel.fromProduct(product)))
+                }
+            )
         }
     }
 }
@@ -82,8 +95,9 @@ fun HomeContent(
     popularProducts: List<Product>,
     categories: List<String>,
     isLoading: Boolean = false,
-    errorMessage: String? = null
-    ) {
+    errorMessage: String? = null,
+    onClick: (Product) -> Unit
+) {
     LazyColumn {
         item {
             ProfileHeader()
@@ -92,7 +106,7 @@ fun HomeContent(
             Spacer(modifier = Modifier.size(16.dp))
         }
         item {
-            if(isLoading) {
+            if (isLoading) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
@@ -110,11 +124,15 @@ fun HomeContent(
                 Spacer(modifier = Modifier.size(16.dp))
             }
             if (featured.isNotEmpty()) {
-                HomeProductRow(products = featured, title = "Featured")
+                HomeProductRow(products = featured, title = "Featured", onClick = onClick)
                 Spacer(modifier = Modifier.size(16.dp))
             }
             if (popularProducts.isNotEmpty()) {
-                HomeProductRow(products = popularProducts, title = "Popular Products")
+                HomeProductRow(
+                    products = popularProducts,
+                    title = "Popular Products",
+                    onClick = onClick
+                )
             }
         }
     }

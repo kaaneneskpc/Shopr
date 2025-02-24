@@ -24,7 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 
 @Composable
-fun HomeProductRow(products: List<Product>, title: String) {
+fun HomeProductRow(products: List<Product>, title: String, onClick: (Product) -> Unit) {
     val isVisible = remember { mutableStateOf(false) }
     Column {
         Box(
@@ -57,7 +57,7 @@ fun HomeProductRow(products: List<Product>, title: String) {
                     visible = isVisible.value,
                     enter = fadeIn() + expandVertically()
                 ) {
-                    ProductItem(product = product) {}
+                    ProductItem(product = product, onClick = onClick)
                 }
             }
         }

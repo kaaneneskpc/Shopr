@@ -9,5 +9,5 @@ data class Product(
     val image: String
 ) {
     val priceString: String
-        get() = "$$price"
+        get() = "$price$"
 }
