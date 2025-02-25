@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kaaneneskpc.shopr.ui.theme.Blue
 
 @Composable
 fun HomeCategoriesRow(categories: List<String>, title: String) {
@@ -60,7 +61,7 @@ fun HomeCategoriesRow(categories: List<String>, title: String) {
                         modifier = Modifier
                             .padding(horizontal = 8.dp)
                             .clip(RoundedCornerShape(8.dp))
-                            .background(MaterialTheme.colorScheme.primary)
+                            .background(Blue)
                             .padding(8.dp)
                     )
                 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kaaneneskpc.domain.model.Product
+import com.kaaneneskpc.shopr.ui.theme.Blue
 
 @Composable
 fun ProductItem(product: Product, onClick: (Product) -> Unit) {
@@ -53,7 +54,7 @@ fun ProductItem(product: Product, onClick: (Product) -> Unit) {
                 text = "$${product.price}",
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 8.dp),
-                color = MaterialTheme.colorScheme.primary,
+                color = Blue,
                 fontWeight = FontWeight.SemiBold
             )
         }

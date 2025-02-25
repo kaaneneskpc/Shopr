@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import com.kaaneneskpc.shopr.ui.theme.Blue
 
 @Composable
 fun HomeProductRow(products: List<Product>, title: String, onClick: (Product) -> Unit) {
@@ -43,7 +44,7 @@ fun HomeProductRow(products: List<Product>, title: String, onClick: (Product) ->
             Text(
                 text = "View all",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary,
+                color = Blue,
                 modifier = Modifier.align(
                     Alignment.CenterEnd
                 )
