@@ -85,9 +85,9 @@ class MainActivity : ComponentActivity() {
 
                             composable<ProductDetails>(
                                 typeMap = mapOf(typeOf<UiProductModel>() to productNavType)
-                            ) {
+                            ) { typeMap ->
                                 shouldShowBottomNav.value = false
-                                val productRoute = it.toRoute<ProductDetails>()
+                                val productRoute = typeMap.toRoute<ProductDetails>()
                                 ProductDetailsScreen(navController, productRoute.product)
                             }
                         }
@@ -100,9 +100,9 @@ class MainActivity : ComponentActivity() {
 }
 
 sealed class BottomNavItems(val route: Any, val title: String, val icon: Int) {
-    object Home : BottomNavItems(HomeScreen, "Home", icon = R.drawable.ic_home)
-    object Cart : BottomNavItems(CartScreen, "Cart", icon = R.drawable.ic_cart)
-    object Profile : BottomNavItems(ProfileScreen, "Profile", icon = R.drawable.ic_profile_bn)
+    data object Home : BottomNavItems(HomeScreen, "Home", icon = R.drawable.ic_home)
+    data object Cart : BottomNavItems(CartScreen, "Cart", icon = R.drawable.ic_cart)
+    data object Profile : BottomNavItems(ProfileScreen, "Profile", icon = R.drawable.ic_profile_bn)
 }
 
 @Composable
