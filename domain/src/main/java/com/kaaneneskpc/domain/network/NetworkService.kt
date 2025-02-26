@@ -1,7 +1,6 @@
 package com.kaaneneskpc.domain.network
 
 import com.kaaneneskpc.domain.model.CategoryListModel
-import com.kaaneneskpc.domain.model.Product
 import com.kaaneneskpc.domain.model.ProductListModel
 
 interface NetworkService {
