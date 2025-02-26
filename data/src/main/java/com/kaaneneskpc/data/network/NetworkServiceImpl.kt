@@ -1,11 +1,8 @@
 package com.kaaneneskpc.data.network
 
-import com.kaaneneskpc.data.model.DataCategoryModel
-import com.kaaneneskpc.data.model.DataProductModel
 import com.kaaneneskpc.data.model.response.CategoryListResponse
 import com.kaaneneskpc.data.model.response.ProductListResponse
 import com.kaaneneskpc.domain.model.CategoryListModel
-import com.kaaneneskpc.domain.model.Product
 import com.kaaneneskpc.domain.model.ProductListModel
 import com.kaaneneskpc.domain.network.NetworkService
 import com.kaaneneskpc.domain.network.ResultWrapper
@@ -15,7 +12,6 @@ import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.header
 import io.ktor.client.request.request
-import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.Parameters
@@ -83,6 +79,7 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
                 // Set content type
                 contentType(ContentType.Application.Json)
             }.body<T>()
+            @Suppress("UNCHECKED_CAST")
             val result: R = mapper?.invoke(response) ?: response as R
             ResultWrapper.Success(result)
         } catch (e: ClientRequestException) {
