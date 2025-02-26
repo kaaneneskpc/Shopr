@@ -3,7 +3,6 @@ package com.kaaneneskpc.shopr.ui.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaaneneskpc.domain.model.Product
-import com.kaaneneskpc.domain.model.ProductListModel
 import com.kaaneneskpc.domain.network.ResultWrapper
 import com.kaaneneskpc.domain.usecase.GetCategoriesUseCase
 import com.kaaneneskpc.domain.usecase.GetProductsUseCase

@@ -11,6 +11,7 @@ import java.net.URLEncoder
 import java.util.Base64
 
 val productNavType = object : NavType<UiProductModel>(isNullableAllowed = false) {
+    @Suppress("DEPRECATION")
     override fun get(bundle: Bundle, key: String): UiProductModel? {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             return bundle.getParcelable(key, UiProductModel::class.java)
