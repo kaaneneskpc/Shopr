@@ -3,6 +3,7 @@ package com.kaaneneskpc.shopr.ui.feature.productDetails
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -187,12 +188,10 @@ fun ProductDetailsScreen(
         LaunchedEffect(uiState.value) {
             when (uiState.value) {
                 is ProductDetailsEvent.Loading -> {
-                    // Show loading
                     loading.value = true
                 }
 
                 is ProductDetailsEvent.Success -> {
-                    // Show success
                     loading.value = false
                     Toast.makeText(
                         navController.context,
@@ -202,7 +201,6 @@ fun ProductDetailsScreen(
                 }
 
                 is ProductDetailsEvent.Error -> {
-                    // Show error
                     Toast.makeText(
                         navController.context,
                         (uiState.value as ProductDetailsEvent.Error).message,
@@ -220,17 +218,11 @@ fun ProductDetailsScreen(
         if (loading.value) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.7f)),
+                    .fillMaxSize().clickable(enabled = false) {},
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 CircularProgressIndicator()
-                Text(
-                    text = "Adding to cart...",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Blue
-                )
             }
         }
     }

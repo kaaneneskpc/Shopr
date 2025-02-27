@@ -16,6 +16,7 @@ import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.header
 import io.ktor.client.request.request
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.Parameters
@@ -96,7 +97,7 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
                 }
                 // Set body for POST, PUT, etc.
                 if (body != null) {
-                    this.body = body
+                    setBody(body)
                 }
 
                 // Set content type
