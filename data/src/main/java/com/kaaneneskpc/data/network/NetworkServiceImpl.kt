@@ -1,5 +1,7 @@
 package com.kaaneneskpc.data.network
 
+import com.kaaneneskpc.data.model.request.AddToCartRequest
+import com.kaaneneskpc.data.model.response.CartResponse
 import com.kaaneneskpc.data.model.response.CategoryListResponse
 import com.kaaneneskpc.data.model.response.ProductListResponse
 import com.kaaneneskpc.domain.model.CartModel
