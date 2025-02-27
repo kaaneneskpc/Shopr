@@ -2,8 +2,10 @@ package com.kaaneneskpc.data.network
 
 import com.kaaneneskpc.data.model.response.CategoryListResponse
 import com.kaaneneskpc.data.model.response.ProductListResponse
+import com.kaaneneskpc.domain.model.CartModel
 import com.kaaneneskpc.domain.model.CategoryListModel
 import com.kaaneneskpc.domain.model.ProductListModel
+import com.kaaneneskpc.domain.model.request.AddCartRequestModel
 import com.kaaneneskpc.domain.network.NetworkService
 import com.kaaneneskpc.domain.network.ResultWrapper
 import io.ktor.client.HttpClient
@@ -45,6 +47,25 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
                 categories.toCategoryList()
             }
         )
+    }
+
+    override suspend fun addProductToCart(request: AddCartRequestModel): ResultWrapper<CartModel> {
+        val url = "$baseUrl/cart/1"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Post,
+            body = AddToCartRequest.fromCartRequestModel(request),
+            mapper = { cartItem: CartResponse ->
+                cartItem.toCartModel()
+            })
+    }
+
+    override suspend fun getCart(): ResultWrapper<CartModel> {
+        val url = "$baseUrl/cart/1"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Get,
+            mapper = { cartItem: CartResponse ->
+                cartItem.toCartModel()
+            })
     }
 
     @OptIn(InternalAPI::class)
