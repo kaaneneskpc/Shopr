@@ -30,6 +30,13 @@ fun UserAddressScreen(navController: NavController, userAddress: UserAddress?) {
     val country = remember { mutableStateOf(userAddress?.country ?: "") }
     
     val scrollState = rememberScrollState()
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    
+    val hasAnyContent = addressLine.value.isNotEmpty() || 
+                       city.value.isNotEmpty() || 
+                       state.value.isNotEmpty() || 
+                       postalCode.value.isNotEmpty() || 
+                       country.value.isNotEmpty()
     
     fun clearAllFields() {
         addressLine.value = ""
@@ -37,6 +44,61 @@ fun UserAddressScreen(navController: NavController, userAddress: UserAddress?) {
         state.value = ""
         postalCode.value = ""
         country.value = ""
+    }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = {
+                Text(
+                    text = "Delete Address",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
+            text = {
+                Text(
+                    text = "Do you want to delete address?",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        clearAllFields()
+                        showDeleteDialog = false
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.LightGray
+                    ),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Text(
+                        "Yes",
+                        color = Color.Blue,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { showDeleteDialog = false },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.LightGray
+                    ),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Text(
+                        "No",
+                        color = Color.Red,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            },
+            containerColor = MaterialTheme.colorScheme.surface,
+            tonalElevation = 8.dp
+        )
     }
     
     Box(
@@ -75,12 +137,13 @@ fun UserAddressScreen(navController: NavController, userAddress: UserAddress?) {
                 )
                 
                 IconButton(
-                    onClick = { clearAllFields() }
+                    onClick = { showDeleteDialog = true },
+                    enabled = hasAnyContent
                 ) {
                     Icon(
                         Icons.Default.Delete,
                         contentDescription = "Clear All Fields",
-                        tint = Color.Red,
+                        tint = if (hasAnyContent) Color.Red else Color.Gray,
                     )
                 }
             }
