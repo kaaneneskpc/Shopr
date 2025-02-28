@@ -8,19 +8,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kaaneneskpc.shopr.utils.CurrencyUtils
 
 @Composable
 fun AmountRow(title: String, amount: Double) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(horizontal = 8.dp)
     ) {
         Text(
             text = title,
             modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.bodyMedium
         )
-        Text(text = "$${amount}", style = MaterialTheme.typography.titleMedium)
+        Text(text = CurrencyUtils.formatPrice(amount), style = MaterialTheme.typography.titleSmall)
     }
 }

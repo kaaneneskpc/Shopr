@@ -78,8 +78,8 @@ fun CartSummaryScreenContent(cartSummary: CartSummary) {
                     AmountRow("Tax", cartSummary.data.tax)
                     AmountRow("Shipping", cartSummary.data.shipping)
                     AmountRow("Discount", cartSummary.data.discount)
-                    
-                    Divider(
+
+                    HorizontalDivider(
                         modifier = Modifier.padding(vertical = 16.dp),
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
                     )
@@ -108,26 +108,5 @@ fun CartSummaryScreenContent(cartSummary: CartSummary) {
         item {
             Spacer(modifier = Modifier.height(16.dp))
         }
-    }
-}
-
-@Composable
-private fun AmountRow(title: String, amount: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Text(
-            text = amount,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
     }
 }
