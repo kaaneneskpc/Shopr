@@ -28,7 +28,12 @@ import com.kaaneneskpc.domain.model.CartItemModel
 import com.kaaneneskpc.shopr.R
 
 @Composable
-fun CartItem(item: CartItemModel) {
+fun CartItem(
+    item: CartItemModel,
+    onIncrement: (CartItemModel) -> Unit,
+    onDecrement: (CartItemModel) -> Unit,
+    onRemove: (CartItemModel) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,29 +60,29 @@ fun CartItem(item: CartItemModel) {
             )
             Spacer(modifier = Modifier.size(4.dp))
             Text(
-                text = "${item.price}$",
+                text = "$${item.price}",
                 style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.primary
             )
         }
         Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.End) {
 
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onRemove(item) }) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_delete), contentDescription = null
                 )
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { onIncrement(item) }) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_subtract), contentDescription = null
+                        painter = painterResource(id = R.drawable.ic_add), contentDescription = null
                     )
                 }
                 Text(text = item.quantity.toString())
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { onDecrement(item) }) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_add),
+                        painter = painterResource(id = R.drawable.ic_subtract),
                         contentDescription = null
                     )
                 }

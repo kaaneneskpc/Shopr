@@ -99,12 +99,18 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
                 ) {
                     LazyColumn {
                         items(cartItems.value) { item ->
-                            CartItem(item = item)
+                            CartItem(item = item,
+                                onIncrement = { viewModel.incrementQuantity(it) },
+                                onDecrement = { viewModel.decrementQuantity(it) },
+                                onRemove = { viewModel.removeItem(it) })
                         }
                     }
                 }
-                if(shouldShowList) {
-                    Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+                if (shouldShowList) {
+                    Button(
+                        onClick = { navController.navigate(CartSummaryScreen) },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
                         Text(text = "Checkout")
                     }
                 }
