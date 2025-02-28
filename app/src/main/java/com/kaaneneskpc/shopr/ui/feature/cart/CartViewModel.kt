@@ -33,6 +33,48 @@ class CartViewModel(private val cartUseCase: GetCartUseCase) : ViewModel() {
             }
         }
     }
+
+    fun incrementQuantity(cartItem: CartItemModel) {
+        if(cartItem.quantity==10) return
+        updateQuantity(cartItem.copy(quantity = cartItem.quantity + 1))
+    }
+
+    fun decrementQuantity(cartItem: CartItemModel) {
+        if(cartItem.quantity==1) return
+        updateQuantity(cartItem.copy(quantity = cartItem.quantity - 1))
+    }
+
+    private fun updateQuantity(cartItem: CartItemModel) {
+        viewModelScope.launch {
+            _uiState.value = CartEvent.Loading
+            val result = updateQuantityUseCase.execute(cartItem)
+            when (result) {
+                is com.codewithfk.domain.network.ResultWrapper.Success -> {
+                    _uiState.value = CartEvent.Success(result.value.data)
+                }
+
+                is com.codewithfk.domain.network.ResultWrapper.Failure -> {
+                    _uiState.value = CartEvent.Error("Something went wrong!")
+                }
+            }
+        }
+    }
+
+    fun removeItem(cartItem: CartItemModel) {
+        viewModelScope.launch {
+            _uiState.value = CartEvent.Loading
+            val result = deleteItem.execute(cartItem.id, 1)
+            when (result) {
+                is com.codewithfk.domain.network.ResultWrapper.Success -> {
+                    _uiState.value = CartEvent.Success(result.value.data)
+                }
+                is com.codewithfk.domain.network.ResultWrapper.Failure -> {
+                    _uiState.value = CartEvent.Error("Something went wrong!")
+                }
+            }
+        }
+    }
+
 }
 
 sealed class CartEvent {
