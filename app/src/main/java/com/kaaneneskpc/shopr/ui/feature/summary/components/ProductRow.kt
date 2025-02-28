@@ -23,7 +23,7 @@ fun ProductRow(cartItemModel: CartItemModel) {
             style = MaterialTheme.typography.bodyMedium
         )
         Text(
-            text = "$${cartItemModel.price} x ${cartItemModel.quantity} $${(cartItemModel.price * cartItemModel.quantity)}",
+            text = "$${cartItemModel.price} x ${cartItemModel.quantity} = $${(cartItemModel.price * cartItemModel.quantity)}",
             style = MaterialTheme.typography.titleMedium
         )
     }
