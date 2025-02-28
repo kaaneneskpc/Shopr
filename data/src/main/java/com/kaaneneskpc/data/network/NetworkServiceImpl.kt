@@ -2,9 +2,12 @@ package com.kaaneneskpc.data.network
 
 import com.kaaneneskpc.data.model.request.AddToCartRequest
 import com.kaaneneskpc.data.model.response.CartResponse
+import com.kaaneneskpc.data.model.response.CartSummaryResponse
 import com.kaaneneskpc.data.model.response.CategoryListResponse
 import com.kaaneneskpc.data.model.response.ProductListResponse
+import com.kaaneneskpc.domain.model.CartItemModel
 import com.kaaneneskpc.domain.model.CartModel
+import com.kaaneneskpc.domain.model.CartSummary
 import com.kaaneneskpc.domain.model.CategoryListModel
 import com.kaaneneskpc.domain.model.ProductListModel
 import com.kaaneneskpc.domain.model.request.AddCartRequestModel
@@ -68,6 +71,37 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
             method = HttpMethod.Get,
             mapper = { cartItem: CartResponse ->
                 cartItem.toCartModel()
+            })
+    }
+
+    override suspend fun updateQuantity(cartItemModel: CartItemModel): ResultWrapper<CartModel> {
+        val url = "$baseUrl/cart/1/${cartItemModel.id}"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Put,
+            body = AddToCartRequest(
+                productId = cartItemModel.productId,
+                quantity = cartItemModel.quantity
+            ),
+            mapper = { cartItem: CartResponse ->
+                cartItem.toCartModel()
+            })
+    }
+
+    override suspend fun deleteItem(cartItemId: Int, userId: Int): ResultWrapper<CartModel> {
+        val url = "$baseUrl/cart/$userId/$cartItemId"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Delete,
+            mapper = { cartItem: CartResponse ->
+                cartItem.toCartModel()
+            })
+    }
+
+    override suspend fun getCartSummary(userId: Int): ResultWrapper<CartSummary> {
+        val url = "$baseUrl/checkout/$userId/summary"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Get,
+            mapper = { cartSummary: CartSummaryResponse ->
+                cartSummary.toCartSummary()
             })
     }
 
