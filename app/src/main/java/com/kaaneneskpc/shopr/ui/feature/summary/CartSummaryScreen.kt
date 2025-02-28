@@ -4,17 +4,23 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.kaaneneskpc.shopr.model.UserAddress
+import com.kaaneneskpc.shopr.navigation.UserAddressRoute
+import com.kaaneneskpc.shopr.navigation.UserAddressRouteWrapper
+import com.kaaneneskpc.shopr.ui.feature.summary.components.AddressBar
 import com.kaaneneskpc.shopr.ui.feature.summary.components.CartSummaryScreenContent
+import com.kaaneneskpc.shopr.ui.feature.userAddress.USER_ADDRESS_SCREEN
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,6 +29,7 @@ fun CartSummaryScreen(
     navController: NavController,
     viewModel: CartSummaryViewModel = koinViewModel()
 ) {
+    val address = remember { mutableStateOf<UserAddress?>(null) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -51,6 +58,13 @@ fun CartSummaryScreen(
                     .padding(16.dp)
             ) {
                 val uiState = viewModel.uiState.collectAsState()
+                LaunchedEffect(navController) {
+                    val savedState = navController.currentBackStackEntry?.savedStateHandle
+                    savedState?.getStateFlow(USER_ADDRESS_SCREEN, address.value)?.collect { userAddress ->
+                        address.value = userAddress
+                    }
+                }
+
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -109,6 +123,18 @@ fun CartSummaryScreen(
 
                         is CartSummaryEvent.Success -> {
                             Column(modifier = Modifier.fillMaxSize()) {
+                                AnimatedVisibility(
+                                    visible = true,
+                                    enter = fadeIn(),
+                                    exit = fadeOut()
+                                ) {
+                                    AddressBar(address.value?.toString() ?: "", onClick = {
+                                        navController.navigate(UserAddressRoute(UserAddressRouteWrapper(address.value)))
+                                    })
+                                }
+
+                                Spacer(modifier = Modifier.height(8.dp))
+
                                 AnimatedVisibility(
                                     visible = true,
                                     enter = fadeIn(),

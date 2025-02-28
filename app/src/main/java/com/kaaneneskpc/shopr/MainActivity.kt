@@ -35,11 +35,15 @@ import com.kaaneneskpc.shopr.navigation.CartSummaryScreen
 import com.kaaneneskpc.shopr.navigation.HomeScreen
 import com.kaaneneskpc.shopr.navigation.ProductDetails
 import com.kaaneneskpc.shopr.navigation.ProfileScreen
-import com.kaaneneskpc.shopr.navigation.productNavType
+import com.kaaneneskpc.shopr.navigation.UserAddressRoute
+import com.kaaneneskpc.shopr.navigation.UserAddressRouteWrapper
+import com.kaaneneskpc.shopr.navigation.navTypes.productNavType
+import com.kaaneneskpc.shopr.navigation.navTypes.userAddressNavType
 import com.kaaneneskpc.shopr.ui.feature.cart.CartScreen
 import com.kaaneneskpc.shopr.ui.feature.home.HomeScreen
 import com.kaaneneskpc.shopr.ui.feature.productDetails.ProductDetailsScreen
 import com.kaaneneskpc.shopr.ui.feature.summary.CartSummaryScreen
+import com.kaaneneskpc.shopr.ui.feature.userAddress.UserAddressScreen
 import com.kaaneneskpc.shopr.ui.theme.Blue
 import com.kaaneneskpc.shopr.ui.theme.ShoprTheme
 import kotlin.reflect.typeOf
@@ -93,6 +97,16 @@ class MainActivity : ComponentActivity() {
                                 shouldShowBottomNav.value = false
                                 val productRoute = typeMap.toRoute<ProductDetails>()
                                 ProductDetailsScreen(navController, productRoute.product)
+                            }
+                            composable<UserAddressRoute>(
+                                typeMap = mapOf(typeOf<UserAddressRouteWrapper>() to userAddressNavType)
+                            ) { typeMap ->
+                                shouldShowBottomNav.value = false
+                                val userAddressRoute = typeMap.toRoute<UserAddressRoute>()
+                                UserAddressScreen(
+                                    navController = navController,
+                                    userAddress = userAddressRoute.userAddressWrapper.userAddress
+                                )
                             }
                         }
                     }

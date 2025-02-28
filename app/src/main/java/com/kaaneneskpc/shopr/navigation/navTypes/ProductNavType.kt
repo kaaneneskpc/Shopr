@@ -1,4 +1,4 @@
-package com.kaaneneskpc.shopr.navigation
+package com.kaaneneskpc.shopr.navigation.navTypes
 
 import android.os.Build
 import androidx.core.bundle.Bundle
