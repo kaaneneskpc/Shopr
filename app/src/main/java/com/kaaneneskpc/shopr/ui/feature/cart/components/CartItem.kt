@@ -74,15 +74,15 @@ fun CartItem(
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { onIncrement(item) }) {
+                IconButton(onClick = { onDecrement(item) }) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_add), contentDescription = null
+                        painter = painterResource(id = R.drawable.ic_subtract), contentDescription = null
                     )
                 }
                 Text(text = item.quantity.toString())
-                IconButton(onClick = { onDecrement(item) }) {
+                IconButton(onClick = { onIncrement(item) }) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_subtract),
+                        painter = painterResource(id = R.drawable.ic_add),
                         contentDescription = null
                     )
                 }

@@ -28,31 +28,23 @@ import io.ktor.util.InternalAPI
 import io.ktor.utils.io.errors.IOException
 
 class NetworkServiceImpl(val client: HttpClient) : NetworkService {
-    private val baseUrl = "https://ecommerce-ktor-4641e7ff1b63.herokuapp.com"
+    private val baseUrl = "https://ecommerce-ktor-4641e7ff1b63.herokuapp.com/v2"
     override suspend fun getProducts(category: Int?): ResultWrapper<ProductListModel> {
-        val url = if(category != null) {
-            "$baseUrl/products/category/$category"
-        } else {
-            "$baseUrl/products/category/1"
-        }
-        return makeWebRequest(
-            url = url,
+        val url = if (category != null) "$baseUrl/products/category/$category" else "$baseUrl/products"
+        return makeWebRequest(url = url,
             method = HttpMethod.Get,
             mapper = { dataModels: ProductListResponse ->
                 dataModels.toProductList()
-            }
-        )
+            })
     }
 
     override suspend fun getCategories(): ResultWrapper<CategoryListModel> {
         val url = "$baseUrl/categories"
-        return makeWebRequest(
-            url = url,
+        return makeWebRequest(url = url,
             method = HttpMethod.Get,
             mapper = { categories: CategoryListResponse ->
                 categories.toCategoryList()
-            }
-        )
+            })
     }
 
     override suspend fun addProductToCart(request: AddCartRequestModel): ResultWrapper<CartModel> {
@@ -105,7 +97,7 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
             })
     }
 
-    @OptIn(InternalAPI::class)
+
     suspend inline fun <reified T, R> makeWebRequest(
         url: String,
         method: HttpMethod,
@@ -137,7 +129,6 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
                 // Set content type
                 contentType(ContentType.Application.Json)
             }.body<T>()
-            @Suppress("UNCHECKED_CAST")
             val result: R = mapper?.invoke(response) ?: response as R
             ResultWrapper.Success(result)
         } catch (e: ClientRequestException) {

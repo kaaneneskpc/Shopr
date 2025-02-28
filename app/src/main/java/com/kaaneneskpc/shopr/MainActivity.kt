@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.kaaneneskpc.shopr.model.UiProductModel
 import com.kaaneneskpc.shopr.navigation.CartScreen
+import com.kaaneneskpc.shopr.navigation.CartSummaryScreen
 import com.kaaneneskpc.shopr.navigation.HomeScreen
 import com.kaaneneskpc.shopr.navigation.ProductDetails
 import com.kaaneneskpc.shopr.navigation.ProfileScreen
@@ -38,6 +39,7 @@ import com.kaaneneskpc.shopr.navigation.productNavType
 import com.kaaneneskpc.shopr.ui.feature.cart.CartScreen
 import com.kaaneneskpc.shopr.ui.feature.home.HomeScreen
 import com.kaaneneskpc.shopr.ui.feature.productDetails.ProductDetailsScreen
+import com.kaaneneskpc.shopr.ui.feature.summary.CartSummaryScreen
 import com.kaaneneskpc.shopr.ui.theme.Blue
 import com.kaaneneskpc.shopr.ui.theme.ShoprTheme
 import kotlin.reflect.typeOf
@@ -81,7 +83,10 @@ class MainActivity : ComponentActivity() {
                                     Text(text = "Profile")
                                 }
                             }
-
+                            composable<CartSummaryScreen> {
+                                shouldShowBottomNav.value = false
+                                CartSummaryScreen(navController = navController)
+                            }
                             composable<ProductDetails>(
                                 typeMap = mapOf(typeOf<UiProductModel>() to productNavType)
                             ) { typeMap ->

@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.kaaneneskpc.domain.model.CartItemModel
+import com.kaaneneskpc.shopr.navigation.CartSummaryScreen
 import com.kaaneneskpc.shopr.ui.feature.cart.components.CartItem
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel

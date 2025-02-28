@@ -2,6 +2,7 @@ package com.kaaneneskpc.domain.network
 
 import com.kaaneneskpc.domain.model.CartItemModel
 import com.kaaneneskpc.domain.model.CartModel
+import com.kaaneneskpc.domain.model.CartSummary
 import com.kaaneneskpc.domain.model.CategoryListModel
 import com.kaaneneskpc.domain.model.ProductListModel
 import com.kaaneneskpc.domain.model.request.AddCartRequestModel
