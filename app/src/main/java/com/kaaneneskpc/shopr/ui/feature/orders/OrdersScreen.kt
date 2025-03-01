@@ -1,103 +1,185 @@
 package com.kaaneneskpc.shopr.ui.feature.orders
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.animation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaaneneskpc.shopr.ui.feature.orders.components.OrderList
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun OrdersScreen(viewModel: OrdersViewModel = koinViewModel()) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+    val tabs = listOf("All", "Pending", "Delivered", "Cancelled")
+    val pagerState = rememberPagerState(pageCount = { tabs.size })
+    val scope = rememberCoroutineScope()
+    
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 16.dp)
+    ) {
+        Text(
+            text = "My Orders",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        
+        // Tab Row
+        TabRow(
+            selectedTabIndex = pagerState.currentPage,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.primary,
+            divider = {
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    thickness = 1.dp
+                )
+            }
         ) {
-            Text(
-                text = "Orders",
-                modifier = Modifier.align(Alignment.Center),
-                style = MaterialTheme.typography.titleMedium
-            )
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                    text = {
+                        Text(
+                            text = title,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Normal
+                        )
+                    }
+                )
+            }
         }
 
         val uiState = viewModel.ordersEvent.collectAsStateWithLifecycle()
-        //Tab Row
-        val tabs = listOf("All", "Pending", "Delivered", "Cancelled")
-        val selectedTab = remember {
-            mutableIntStateOf(0)
-        }
-        TabRow(selectedTabIndex = selectedTab.intValue) {
-            tabs.forEachIndexed { index, title ->
-                Box(modifier = Modifier.clickable {
-                    selectedTab.intValue = index
-                }) {
-                    Text(
-                        text = title,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .align(Alignment.Center),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-        }
-        when (uiState.value) {
-            is OrdersEvent.Loading -> {
-                Column(
-                    Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    CircularProgressIndicator()
-                    Text(text = "Loading")
-                }
-            }
-
-            is OrdersEvent.Success -> {
-                val orders = (uiState.value as OrdersEvent.Success).data
-
-                when (selectedTab.value) {
-                    0 -> {
-                        OrderList(orders = orders)
-                    }
-
-                    1 -> {
-                        OrderList(orders = viewModel.filterOrders(orders, "Pending"))
-                    }
-
-                    2 -> {
-                        OrderList(orders = viewModel.filterOrders(orders, "Delivered"))
-                    }
-
-                    3 -> {
-                        OrderList(orders = viewModel.filterOrders(orders, "Cancelled"))
+        
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize()
+        ) { page ->
+            when (uiState.value) {
+                is OrdersEvent.Loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Loading your orders...",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            )
+                        }
                     }
                 }
-            }
 
-            is OrdersEvent.Error -> {
-                Column(
-                    Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(text = (uiState.value as OrdersEvent.Error).errorMsg)
+                is OrdersEvent.Success -> {
+                    val orders = (uiState.value as OrdersEvent.Success).data
+                    val filteredOrders = when (page) {
+                        0 -> orders
+                        1 -> viewModel.filterOrders(orders, "Pending")
+                        2 -> viewModel.filterOrders(orders, "Delivered")
+                        3 -> viewModel.filterOrders(orders, "Cancelled")
+                        else -> orders
+                    }
+                    
+                    if (filteredOrders.isEmpty()) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier.padding(32.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.ShoppingCart,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(64.dp),
+                                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                                )
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Text(
+                                    text = "No orders found",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    textAlign = TextAlign.Center
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "When you place orders, they will appear here",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+                    } else {
+                        OrderList(orders = filteredOrders)
+                    }
+                }
+
+                is OrdersEvent.Error -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.padding(32.dp)
+                        ) {
+                            Text(
+                                text = "Oops! Something went wrong",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.error,
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = (uiState.value as OrdersEvent.Error).errorMsg,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = { viewModel.getOrderList() },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary
+                                )
+                            ) {
+                                Text("Try Again")
+                            }
+                        }
+                    }
                 }
             }
         }

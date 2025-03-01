@@ -26,11 +26,9 @@ class OrdersViewModel(
         return filteredList
     }
 
-    private fun getOrderList() {
+    fun getOrderList() {
         viewModelScope.launch {
-            val result = orderListUseCase.execute()
-
-            when (result) {
+            when (val result = orderListUseCase.execute()) {
                 is ResultWrapper.Success -> {
                     _ordersEvent.value = OrdersEvent.Success(result.value.data)
                 }
