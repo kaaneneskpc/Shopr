@@ -1,67 +1,91 @@
 package com.kaaneneskpc.shopr.ui.feature.home.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.kaaneneskpc.shopr.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileHeader() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 16.dp)
+    var hasNotifications by remember { mutableStateOf(true) }
+    
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 1.dp
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.align(Alignment.CenterStart)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_profile),
-                contentDescription = null,
-                modifier = Modifier.size(48.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Text(
-                    text = "Hello,", style = MaterialTheme.typography.bodySmall
-                )
-                Text(
-                    text = "Kaan Enes KAPICI",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Surface(
+                    modifier = Modifier.size(48.dp),
+                    shape = CircleShape,
+                    color = MaterialTheme.colorScheme.secondaryContainer
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.AccountCircle,
+                        contentDescription = "Profile",
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .size(32.dp),
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+                
+                Column {
+                    Text(
+                        text = "Welcome back,",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    )
+                    Text(
+                        text = "Kaan Enes",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+            
+            BadgedBox(
+                badge = {
+                    if (hasNotifications) {
+                        Badge {
+                            Text("1")
+                        }
+                    }
+                }
+            ) {
+                IconButton(
+                    onClick = { /* Handle notification click */ },
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(48.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Notifications,
+                        contentDescription = "Notifications",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
-        Image(
-            painter = painterResource(id = R.drawable.notificatino),
-            contentDescription = null,
-            modifier = Modifier
-                .size(48.dp)
-                .align(Alignment.CenterEnd)
-                .clip(CircleShape)
-                .background(Color.LightGray.copy(alpha = 0.3f))
-                .padding(8.dp),
-            contentScale = ContentScale.Inside
-        )
     }
 }

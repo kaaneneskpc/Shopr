@@ -19,7 +19,7 @@ class HomeViewModel(private val getProductsUseCase: GetProductsUseCase, private 
         getAllProducts()
     }
 
-    private fun getAllProducts() {
+    fun getAllProducts() {
         viewModelScope.launch {
             _uiState.value = HomeScreenEvent.Loading
             val featuredProducts = getProducts(1)
