@@ -1,4 +1,4 @@
-package com.kaaneneskpc.data.model
+package com.kaaneneskpc.data.model.response.cart
 
 import com.kaaneneskpc.domain.model.CartItemModel
 import kotlinx.serialization.Serializable

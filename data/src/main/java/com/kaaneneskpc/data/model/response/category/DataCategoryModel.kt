@@ -1,4 +1,4 @@
-package com.kaaneneskpc.data.model
+package com.kaaneneskpc.data.model.response.category
 
 import com.kaaneneskpc.domain.model.Category
 import kotlinx.serialization.Serializable

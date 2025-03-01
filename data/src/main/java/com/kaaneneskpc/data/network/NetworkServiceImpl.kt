@@ -1,14 +1,17 @@
 package com.kaaneneskpc.data.network
 
 import com.kaaneneskpc.data.model.request.AddToCartRequest
-import com.kaaneneskpc.data.model.response.CartResponse
-import com.kaaneneskpc.data.model.response.CartSummaryResponse
-import com.kaaneneskpc.data.model.response.CategoryListResponse
-import com.kaaneneskpc.data.model.response.ProductListResponse
+import com.kaaneneskpc.data.model.request.AddressDataModel
+import com.kaaneneskpc.data.model.response.cart.CartResponse
+import com.kaaneneskpc.data.model.response.cart.CartSummaryResponse
+import com.kaaneneskpc.data.model.response.category.CategoryListResponse
+import com.kaaneneskpc.data.model.response.product.ProductListResponse
+import com.kaaneneskpc.domain.model.AddressDomainModel
 import com.kaaneneskpc.domain.model.CartItemModel
 import com.kaaneneskpc.domain.model.CartModel
 import com.kaaneneskpc.domain.model.CartSummary
 import com.kaaneneskpc.domain.model.CategoryListModel
+import com.kaaneneskpc.domain.model.OrdersListModel
 import com.kaaneneskpc.domain.model.ProductListModel
 import com.kaaneneskpc.domain.model.request.AddCartRequestModel
 import com.kaaneneskpc.domain.network.NetworkService
@@ -24,7 +27,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
-import io.ktor.util.InternalAPI
 import io.ktor.utils.io.errors.IOException
 
 class NetworkServiceImpl(val client: HttpClient) : NetworkService {
@@ -94,6 +96,26 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
             method = HttpMethod.Get,
             mapper = { cartSummary: CartSummaryResponse ->
                 cartSummary.toCartSummary()
+            })
+    }
+
+    override suspend fun placeOrder(address: AddressDomainModel, userId: Int): ResultWrapper<Long> {
+        val dataModel = AddressDataModel.fromDomainAddress(address)
+        val url = "$baseUrl/orders/$userId"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Post,
+            body = dataModel,
+            mapper = { orderRes: PlaceOrderResponse ->
+                orderRes.data.id
+            })
+    }
+
+    override suspend fun getOrderList(): ResultWrapper<OrdersListModel> {
+        val url = "$baseUrl/orders/1"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Get,
+            mapper = { ordersResponse: OrdersListResponse ->
+                ordersResponse.toDomainResponse()
             })
     }
 

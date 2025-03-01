@@ -1,6 +1,5 @@
-package com.kaaneneskpc.data.model.response
+package com.kaaneneskpc.data.model.response.cart
 
-import com.kaaneneskpc.data.model.CartItem
 import com.kaaneneskpc.domain.model.SummaryData
 import kotlinx.serialization.Serializable
 

@@ -1,6 +1,5 @@
-package com.kaaneneskpc.data.model.response
+package com.kaaneneskpc.data.model.response.category
 
-import com.kaaneneskpc.data.model.DataCategoryModel
 import com.kaaneneskpc.domain.model.CategoryListModel
 import kotlinx.serialization.Serializable
 

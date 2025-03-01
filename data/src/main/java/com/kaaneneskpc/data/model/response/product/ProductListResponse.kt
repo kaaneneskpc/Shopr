@@ -1,6 +1,5 @@
-package com.kaaneneskpc.data.model.response
+package com.kaaneneskpc.data.model.response.product
 
-import com.kaaneneskpc.data.model.DataProductModel
 import com.kaaneneskpc.domain.model.ProductListModel
 import kotlinx.serialization.Serializable
 
