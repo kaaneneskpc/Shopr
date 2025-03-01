@@ -1,9 +1,11 @@
 package com.kaaneneskpc.domain.network
 
+import com.kaaneneskpc.domain.model.AddressDomainModel
 import com.kaaneneskpc.domain.model.CartItemModel
 import com.kaaneneskpc.domain.model.CartModel
 import com.kaaneneskpc.domain.model.CartSummary
 import com.kaaneneskpc.domain.model.CategoryListModel
+import com.kaaneneskpc.domain.model.OrdersListModel
 import com.kaaneneskpc.domain.model.ProductListModel
 import com.kaaneneskpc.domain.model.request.AddCartRequestModel
 
@@ -15,6 +17,8 @@ interface NetworkService {
     suspend fun updateQuantity(cartItemModel: CartItemModel): ResultWrapper<CartModel>
     suspend fun deleteItem(cartItemId: Int, userId: Int): ResultWrapper<CartModel>
     suspend fun getCartSummary(userId: Int): ResultWrapper<CartSummary>
+    suspend fun placeOrder(address: AddressDomainModel, userId: Int): ResultWrapper<Long>
+    suspend fun getOrderList(): ResultWrapper<OrdersListModel>
 }
 
 sealed class ResultWrapper<out T> {
