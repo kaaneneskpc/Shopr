@@ -30,7 +30,7 @@ fun SearchBar(
         active = isActive,
         onActiveChange = { isActive = it },
         modifier = modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 4.dp)
             .fillMaxWidth(),
         placeholder = {
             Text(
@@ -61,7 +61,7 @@ fun SearchBar(
                 }
             }
         },
-        shape = RoundedCornerShape(28.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = SearchBarDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
             inputFieldColors = TextFieldDefaults.colors(
