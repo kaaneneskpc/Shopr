@@ -125,7 +125,8 @@ class MainActivity : ComponentActivity() {
 
 sealed class BottomNavItems(val route: Any, val title: String, val icon: Int) {
     data object Home : BottomNavItems(HomeScreen, "Home", icon = R.drawable.ic_home)
-    data object Cart : BottomNavItems(OrdersScreen, "Orders", icon = R.drawable.ic_orders)
+    data object Cart : BottomNavItems(CartScreen, "Cart", icon = R.drawable.ic_cart)
+    data object Order : BottomNavItems(OrdersScreen, "Orders", icon = R.drawable.ic_orders)
     data object Profile : BottomNavItems(ProfileScreen, "Profile", icon = R.drawable.ic_profile_bn)
 }
 
@@ -136,6 +137,7 @@ fun BottomNavigationBar(navController: NavController) {
         val items = listOf(
             BottomNavItems.Home,
             BottomNavItems.Cart,
+            BottomNavItems.Order,
             BottomNavItems.Profile
         )
 
