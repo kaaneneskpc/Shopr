@@ -11,8 +11,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -20,7 +18,6 @@ import androidx.navigation.NavController
 import com.kaaneneskpc.domain.model.UserProfile
 import com.kaaneneskpc.shopr.model.toUserAddress
 import com.kaaneneskpc.shopr.navigation.EditProfileRoute
-import com.kaaneneskpc.shopr.navigation.OrdersScreen
 import com.kaaneneskpc.shopr.navigation.UserAddressRoute
 import com.kaaneneskpc.shopr.navigation.UserAddressRouteWrapper
 import com.kaaneneskpc.shopr.ui.feature.profile.components.ProfileHeader
