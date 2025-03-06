@@ -19,14 +19,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kaaneneskpc.domain.model.Product
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.clickable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.navigation.NavController
+import com.kaaneneskpc.shopr.navigation.AllProductsScreen
 import com.kaaneneskpc.shopr.ui.theme.Blue
 
 @Composable
-fun HomeProductRow(products: List<Product>, title: String, onClick: (Product) -> Unit) {
+fun HomeProductRow(
+    products: List<Product>, 
+    title: String, 
+    onClick: (Product) -> Unit,
+    navController: NavController? = null
+) {
     val isVisible = remember { mutableStateOf(false) }
+    val isProductSection = title == "Featured Products" || title == "Popular Products"
+    
     Column {
         Box(
             modifier = Modifier
@@ -45,9 +55,13 @@ fun HomeProductRow(products: List<Product>, title: String, onClick: (Product) ->
                 text = "View all",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Blue,
-                modifier = Modifier.align(
-                    Alignment.CenterEnd
-                )
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .clickable(enabled = isProductSection && navController != null) {
+                        if (isProductSection && navController != null) {
+                            navController.navigate(AllProductsScreen)
+                        }
+                    }
             )
         }
         Spacer(modifier = Modifier.size(8.dp))

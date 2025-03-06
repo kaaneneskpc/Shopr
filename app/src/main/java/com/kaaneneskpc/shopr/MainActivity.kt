@@ -35,6 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.kaaneneskpc.domain.model.UserProfile
 import com.kaaneneskpc.shopr.model.UiProductModel
+import com.kaaneneskpc.shopr.navigation.AllProductsScreen
 import com.kaaneneskpc.shopr.navigation.CartScreen
 import com.kaaneneskpc.shopr.navigation.CartSummaryScreen
 import com.kaaneneskpc.shopr.navigation.EditProfileRoute
@@ -162,6 +163,9 @@ fun MainScreen() {
                 }
                 composable<CartSummaryScreen> {
                     CartSummaryScreen(navController = navController)
+                }
+                composable<AllProductsScreen> {
+                    com.kaaneneskpc.shopr.ui.feature.allproducts.AllProductsScreen(navController = navController)
                 }
                 composable<ProductDetails>(
                     typeMap = mapOf(typeOf<UiProductModel>() to productNavType)

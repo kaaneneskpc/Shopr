@@ -119,7 +119,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
                             HomeProductRow(
                                 products = uiState.featured,
                                 title = "Featured Products",
-                                onClick = handleProductClick
+                                onClick = handleProductClick,
+                                navController = navController
                             )
                         }
                     }
@@ -129,7 +130,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
                             HomeProductRow(
                                 products = uiState.popularProducts,
                                 title = "Popular Products",
-                                onClick = handleProductClick
+                                onClick = handleProductClick,
+                                navController = navController
                             )
                         }
                     }
