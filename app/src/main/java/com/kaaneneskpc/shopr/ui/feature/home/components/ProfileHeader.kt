@@ -10,8 +10,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kaaneneskpc.shopr.R
 
 @Composable
 fun ProfileHeader() {
@@ -39,7 +41,7 @@ fun ProfileHeader() {
                     color = MaterialTheme.colorScheme.secondaryContainer
                 ) {
                     Icon(
-                        imageVector = Icons.Default.AccountCircle,
+                        painter = painterResource(R.drawable.ic_profile),
                         contentDescription = "Profile",
                         modifier = Modifier
                             .padding(8.dp)

@@ -118,10 +118,6 @@ fun ProfileScreen(
                         val userAddress = userProfile.defaultAddress?.toUserAddress()
                         navController.navigate(UserAddressRoute(UserAddressRouteWrapper(userAddress)))
                     },
-                    onOrdersClick = { 
-                        // Siparişlerim ekranına git
-                        navController.navigate(OrdersScreen)
-                    },
                     onPasswordChangeClick = { showPasswordDialog = true },
                     onNotificationsClick = { /* Bildirim ayarları ekranına git */ },
                     onLanguageClick = { /* Dil ayarları ekranına git */ },
@@ -359,7 +355,6 @@ fun ProfileContent(
     userProfile: UserProfile,
     onEditProfileClick: () -> Unit,
     onAddressesClick: () -> Unit,
-    onOrdersClick: () -> Unit,
     onPasswordChangeClick: () -> Unit,
     onNotificationsClick: () -> Unit,
     onLanguageClick: () -> Unit,
@@ -392,13 +387,6 @@ fun ProfileContent(
                     title = "Adreslerim",
                     subtitle = "Teslimat adreslerinizi yönetin",
                     onClick = onAddressesClick
-                )
-
-                ProfileMenuItem(
-                    icon = Icons.Default.ShoppingCart,
-                    title = "Siparişlerim",
-                    subtitle = "Geçmiş siparişlerinizi görüntüleyin",
-                    onClick = onOrdersClick
                 )
 
                 ProfileMenuItem(
