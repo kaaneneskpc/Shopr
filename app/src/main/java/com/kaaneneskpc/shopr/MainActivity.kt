@@ -44,6 +44,7 @@ import com.kaaneneskpc.shopr.ui.feature.cart.CartScreen
 import com.kaaneneskpc.shopr.ui.feature.home.HomeScreen
 import com.kaaneneskpc.shopr.ui.feature.orders.OrdersScreen
 import com.kaaneneskpc.shopr.ui.feature.productDetails.ProductDetailsScreen
+import com.kaaneneskpc.shopr.ui.feature.profile.ProfileScreen
 import com.kaaneneskpc.shopr.ui.feature.summary.CartSummaryScreen
 import com.kaaneneskpc.shopr.ui.feature.userAddress.UserAddressScreen
 import com.kaaneneskpc.shopr.ui.theme.Blue
@@ -89,9 +90,7 @@ class MainActivity : ComponentActivity() {
                             }
                             composable<ProfileScreen> {
                                 shouldShowBottomNav.value = true
-                                Box(modifier = Modifier.fillMaxSize()) {
-                                    Text(text = "Profile")
-                                }
+                                ProfileScreen(navController)
                             }
                             composable<CartSummaryScreen> {
                                 shouldShowBottomNav.value = false
