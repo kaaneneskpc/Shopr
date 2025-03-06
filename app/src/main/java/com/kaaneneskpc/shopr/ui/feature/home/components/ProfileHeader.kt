@@ -1,5 +1,6 @@
 package com.kaaneneskpc.shopr.ui.feature.home.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -10,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -18,7 +20,7 @@ import com.kaaneneskpc.shopr.R
 @Composable
 fun ProfileHeader() {
     var hasNotifications by remember { mutableStateOf(true) }
-    
+
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,
@@ -35,21 +37,13 @@ fun ProfileHeader() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Surface(
-                    modifier = Modifier.size(48.dp),
-                    shape = CircleShape,
-                    color = MaterialTheme.colorScheme.secondaryContainer
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_profile),
-                        contentDescription = "Profile",
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .size(32.dp),
-                        tint = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                }
-                
+                Image(
+                    painter = painterResource(R.drawable.ic_profile),
+                    contentDescription = "Profile",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(32.dp),
+                )
                 Column {
                     Text(
                         text = "Welcome back,",
@@ -64,7 +58,7 @@ fun ProfileHeader() {
                     )
                 }
             }
-            
+
             BadgedBox(
                 badge = {
                     if (hasNotifications) {
