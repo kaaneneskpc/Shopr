@@ -18,6 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.kaaneneskpc.domain.model.UserProfile
+import com.kaaneneskpc.shopr.model.toUserAddress
+import com.kaaneneskpc.shopr.navigation.EditProfileRoute
+import com.kaaneneskpc.shopr.navigation.OrdersScreen
+import com.kaaneneskpc.shopr.navigation.UserAddressRoute
+import com.kaaneneskpc.shopr.navigation.UserAddressRouteWrapper
 import com.kaaneneskpc.shopr.ui.feature.profile.components.ProfileHeader
 import com.kaaneneskpc.shopr.ui.feature.profile.components.ProfileMenuItem
 import com.kaaneneskpc.shopr.ui.feature.profile.components.ProfileSection
@@ -103,13 +108,24 @@ fun ProfileScreen(
                 val userProfile = (uiState as ProfileUiState.Success).userProfile
                 ProfileContent(
                     userProfile = userProfile,
-                    onEditProfileClick = { /* Navigate to edit profile */ },
-                    onAddressesClick = { /* Navigate to addresses */ },
-                    onOrdersClick = { /* Navigate to orders */ },
+                    onEditProfileClick = { 
+                        // Profil düzenleme ekranına git
+                        navController.navigate(EditProfileRoute(userProfile))
+                    },
+                    onAddressesClick = { 
+                        // Adreslerim ekranına git
+                        // AddressDomainModel'i UserAddress'e dönüştürüyoruz
+                        val userAddress = userProfile.defaultAddress?.toUserAddress()
+                        navController.navigate(UserAddressRoute(UserAddressRouteWrapper(userAddress)))
+                    },
+                    onOrdersClick = { 
+                        // Siparişlerim ekranına git
+                        navController.navigate(OrdersScreen)
+                    },
                     onPasswordChangeClick = { showPasswordDialog = true },
-                    onNotificationsClick = { /* Navigate to notifications */ },
-                    onLanguageClick = { /* Navigate to language settings */ },
-                    onThemeClick = { /* Navigate to theme settings */ },
+                    onNotificationsClick = { /* Bildirim ayarları ekranına git */ },
+                    onLanguageClick = { /* Dil ayarları ekranına git */ },
+                    onThemeClick = { /* Tema ayarları ekranına git */ },
                     onLogoutClick = { showLogoutDialog = true }
                 )
             }
@@ -362,59 +378,61 @@ fun ProfileContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileSection(title = "Hesap")
-        Column(modifier = Modifier.padding(vertical = 8.dp)) {
-            ProfileMenuItem(
-                icon = Icons.Default.Person,
-                title = "Profil Bilgileri",
-                subtitle = "Kişisel bilgilerinizi düzenleyin",
-                onClick = onEditProfileClick
-            )
+        ProfileSection(title = "Hesap") {
+            Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                ProfileMenuItem(
+                    icon = Icons.Default.Person,
+                    title = "Profil Bilgileri",
+                    subtitle = "Kişisel bilgilerinizi düzenleyin",
+                    onClick = onEditProfileClick
+                )
 
-            ProfileMenuItem(
-                icon = Icons.Default.LocationOn,
-                title = "Adreslerim",
-                subtitle = "Teslimat adreslerinizi yönetin",
-                onClick = onAddressesClick
-            )
+                ProfileMenuItem(
+                    icon = Icons.Default.LocationOn,
+                    title = "Adreslerim",
+                    subtitle = "Teslimat adreslerinizi yönetin",
+                    onClick = onAddressesClick
+                )
 
-            ProfileMenuItem(
-                icon = Icons.Default.ShoppingCart,
-                title = "Siparişlerim",
-                subtitle = "Geçmiş siparişlerinizi görüntüleyin",
-                onClick = onOrdersClick
-            )
+                ProfileMenuItem(
+                    icon = Icons.Default.ShoppingCart,
+                    title = "Siparişlerim",
+                    subtitle = "Geçmiş siparişlerinizi görüntüleyin",
+                    onClick = onOrdersClick
+                )
 
-            ProfileMenuItem(
-                icon = Icons.Default.Lock,
-                title = "Şifre Değiştir",
-                subtitle = "Hesap güvenliğinizi güncelleyin",
-                onClick = onPasswordChangeClick
-            )
+                ProfileMenuItem(
+                    icon = Icons.Default.Lock,
+                    title = "Şifre Değiştir",
+                    subtitle = "Hesap güvenliğinizi güncelleyin",
+                    onClick = onPasswordChangeClick
+                )
+            }
         }
 
-        ProfileSection(title = "Ayarlar")
-        Column(modifier = Modifier.padding(vertical = 8.dp)) {
-            ProfileMenuItem(
-                icon = Icons.Outlined.Notifications,
-                title = "Bildirim Tercihleri",
-                subtitle = "Bildirim ayarlarınızı yönetin",
-                onClick = onNotificationsClick
-            )
+        ProfileSection(title = "Ayarlar") {
+            Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                ProfileMenuItem(
+                    icon = Icons.Outlined.Notifications,
+                    title = "Bildirim Tercihleri",
+                    subtitle = "Bildirim ayarlarınızı yönetin",
+                    onClick = onNotificationsClick
+                )
 
-            ProfileMenuItem(
-                icon = Icons.Outlined.Edit,
-                title = "Dil",
-                subtitle = "Uygulama dilini değiştirin",
-                onClick = onLanguageClick
-            )
+                ProfileMenuItem(
+                    icon = Icons.Outlined.Edit,
+                    title = "Dil",
+                    subtitle = "Uygulama dilini değiştirin",
+                    onClick = onLanguageClick
+                )
 
-            ProfileMenuItem(
-                icon = Icons.Outlined.Build,
-                title = "Tema",
-                subtitle = "Açık/koyu tema seçin",
-                onClick = onThemeClick
-            )
+                ProfileMenuItem(
+                    icon = Icons.Outlined.Build,
+                    title = "Tema",
+                    subtitle = "Açık/koyu tema seçin",
+                    onClick = onThemeClick
+                )
+            }
         }
 
 

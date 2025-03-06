@@ -26,3 +26,12 @@ data class UserAddress(
         country
     )
 }
+
+// Extension function to convert AddressDomainModel to UserAddress
+fun AddressDomainModel.toUserAddress() = UserAddress(
+    addressLine = this.addressLine,
+    city = this.city,
+    state = this.state,
+    postalCode = this.postalCode,
+    country = this.country
+)

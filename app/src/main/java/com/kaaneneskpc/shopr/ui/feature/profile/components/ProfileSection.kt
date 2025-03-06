@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ProfileSection(
     title: String,
+    content: @Composable () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -27,5 +28,6 @@ fun ProfileSection(
         )
         
         Spacer(modifier = Modifier.height(8.dp))
+        content()
     }
 } 

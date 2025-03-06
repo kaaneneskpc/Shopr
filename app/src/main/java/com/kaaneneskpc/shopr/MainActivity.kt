@@ -17,21 +17,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.kaaneneskpc.domain.model.UserProfile
 import com.kaaneneskpc.shopr.model.UiProductModel
 import com.kaaneneskpc.shopr.navigation.CartScreen
 import com.kaaneneskpc.shopr.navigation.CartSummaryScreen
+import com.kaaneneskpc.shopr.navigation.EditProfileRoute
 import com.kaaneneskpc.shopr.navigation.HomeScreen
 import com.kaaneneskpc.shopr.navigation.OrdersScreen
 import com.kaaneneskpc.shopr.navigation.ProductDetails
@@ -40,11 +46,13 @@ import com.kaaneneskpc.shopr.navigation.UserAddressRoute
 import com.kaaneneskpc.shopr.navigation.UserAddressRouteWrapper
 import com.kaaneneskpc.shopr.navigation.navTypes.productNavType
 import com.kaaneneskpc.shopr.navigation.navTypes.userAddressNavType
+import com.kaaneneskpc.shopr.navigation.navTypes.userProfileNavType
 import com.kaaneneskpc.shopr.ui.feature.cart.CartScreen
 import com.kaaneneskpc.shopr.ui.feature.home.HomeScreen
 import com.kaaneneskpc.shopr.ui.feature.orders.OrdersScreen
 import com.kaaneneskpc.shopr.ui.feature.productDetails.ProductDetailsScreen
 import com.kaaneneskpc.shopr.ui.feature.profile.ProfileScreen
+import com.kaaneneskpc.shopr.ui.feature.profile.edit.EditProfileScreen
 import com.kaaneneskpc.shopr.ui.feature.summary.CartSummaryScreen
 import com.kaaneneskpc.shopr.ui.feature.userAddress.UserAddressScreen
 import com.kaaneneskpc.shopr.ui.theme.Blue
@@ -57,66 +65,128 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ShoprTheme {
-                val shouldShowBottomNav = remember {
-                    mutableStateOf(true)
-                }
-                val navController = rememberNavController()
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    bottomBar = {
-                        AnimatedVisibility(visible = shouldShowBottomNav.value, enter = fadeIn()) {
-                            BottomNavigationBar(navController)
-                        }
+                MainScreen()
+            }
+        }
+    }
+}
 
-                    }
-                ) {
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(it)
-                    ) {
-                        NavHost(navController = navController, startDestination = HomeScreen) {
-                            composable<HomeScreen> {
-                                HomeScreen(navController)
-                                shouldShowBottomNav.value = true
-                            }
-                            composable<CartScreen> {
-                                shouldShowBottomNav.value = true
-                                CartScreen(navController)
-                            }
-                            composable<OrdersScreen> {
-                                shouldShowBottomNav.value = true
-                                OrdersScreen()
-                            }
-                            composable<ProfileScreen> {
-                                shouldShowBottomNav.value = true
-                                ProfileScreen(navController)
-                            }
-                            composable<CartSummaryScreen> {
-                                shouldShowBottomNav.value = false
-                                CartSummaryScreen(navController = navController)
-                            }
-                            composable<ProductDetails>(
-                                typeMap = mapOf(typeOf<UiProductModel>() to productNavType)
-                            ) { typeMap ->
-                                shouldShowBottomNav.value = false
-                                val productRoute = typeMap.toRoute<ProductDetails>()
-                                ProductDetailsScreen(navController, productRoute.product)
-                            }
-                            composable<UserAddressRoute>(
-                                typeMap = mapOf(typeOf<UserAddressRouteWrapper>() to userAddressNavType)
-                            ) { typeMap ->
-                                shouldShowBottomNav.value = false
-                                val userAddressRoute = typeMap.toRoute<UserAddressRoute>()
-                                UserAddressScreen(
-                                    navController = navController,
-                                    userAddress = userAddressRoute.userAddressWrapper.userAddress
+@Composable
+fun MainScreen() {
+    val navController = rememberNavController()
+    val bottomNavItems = listOf(
+        BottomNavItems.Home,
+        BottomNavItems.Cart,
+        BottomNavItems.Order,
+        BottomNavItems.Profile
+    )
+    
+    // Hangi ekranlarda bottom navigation bar'ı göstereceğimizi belirleyen liste
+    val bottomNavRoutes = bottomNavItems.map { it.route::class.qualifiedName }
+    
+    // Bottom navigation bar'ın görünürlüğünü kontrol eden state
+    val shouldShowBottomNav = rememberSaveable { mutableStateOf(true) }
+    
+    // Mevcut destinasyonu takip et
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    
+    // Mevcut rota bottom nav rotalarından biri mi kontrol et
+    shouldShowBottomNav.value = currentDestination?.route?.let { route ->
+        bottomNavRoutes.contains(route.substringBefore("?"))
+    } ?: false
+    
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        bottomBar = {
+            AnimatedVisibility(visible = shouldShowBottomNav.value, enter = fadeIn()) {
+                NavigationBar {
+                    bottomNavItems.forEach { item ->
+                        val isSelected = currentDestination?.hierarchy?.any { 
+                            it.route?.substringBefore("?") == item.route::class.qualifiedName 
+                        } ?: false
+                        
+                        NavigationBarItem(
+                            selected = isSelected,
+                            onClick = {
+                                navController.navigate(item.route) {
+                                    // Başlangıç hedefine kadar pop yaparak gereksiz ekranları stack'ten temizle
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    // Aynı hedef için birden fazla kopya oluşmasını engelle
+                                    launchSingleTop = true
+                                    // Önceki durumu geri yükle
+                                    restoreState = true
+                                }
+                            },
+                            label = { Text(text = item.title) },
+                            icon = {
+                                Image(
+                                    painter = painterResource(id = item.icon),
+                                    contentDescription = null,
+                                    colorFilter = ColorFilter.tint(
+                                        if (isSelected) Blue else Color.LightGray
+                                    )
                                 )
-                            }
-                        }
+                            },
+                            colors = NavigationBarItemDefaults.colors().copy(
+                                selectedIconColor = Blue,
+                                selectedTextColor = Blue,
+                                unselectedTextColor = Color.Gray,
+                                unselectedIconColor = Color.Gray
+                            )
+                        )
                     }
                 }
-
+            }
+        }
+    ) { paddingValues ->
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            NavHost(navController = navController, startDestination = HomeScreen) {
+                composable<HomeScreen> {
+                    HomeScreen(navController)
+                }
+                composable<CartScreen> {
+                    CartScreen(navController)
+                }
+                composable<OrdersScreen> {
+                    OrdersScreen()
+                }
+                composable<ProfileScreen> {
+                    ProfileScreen(navController)
+                }
+                composable<CartSummaryScreen> {
+                    CartSummaryScreen(navController = navController)
+                }
+                composable<ProductDetails>(
+                    typeMap = mapOf(typeOf<UiProductModel>() to productNavType)
+                ) { typeMap ->
+                    val productRoute = typeMap.toRoute<ProductDetails>()
+                    ProductDetailsScreen(navController, productRoute.product)
+                }
+                composable<UserAddressRoute>(
+                    typeMap = mapOf(typeOf<UserAddressRouteWrapper>() to userAddressNavType)
+                ) { typeMap ->
+                    val userAddressRoute = typeMap.toRoute<UserAddressRoute>()
+                    UserAddressScreen(
+                        navController = navController,
+                        userAddress = userAddressRoute.userAddressWrapper.userAddress
+                    )
+                }
+                composable<EditProfileRoute>(
+                    typeMap = mapOf(typeOf<UserProfile>() to userProfileNavType)
+                ) { typeMap ->
+                    val editProfileRoute = typeMap.toRoute<EditProfileRoute>()
+                    EditProfileScreen(
+                        navController = navController,
+                        userProfile = editProfileRoute.userProfile
+                    )
+                }
             }
         }
     }
@@ -127,51 +197,4 @@ sealed class BottomNavItems(val route: Any, val title: String, val icon: Int) {
     data object Cart : BottomNavItems(CartScreen, "Cart", icon = R.drawable.ic_cart)
     data object Order : BottomNavItems(OrdersScreen, "Orders", icon = R.drawable.ic_orders)
     data object Profile : BottomNavItems(ProfileScreen, "Profile", icon = R.drawable.ic_profile_bn)
-}
-
-@Composable
-fun BottomNavigationBar(navController: NavController) {
-    NavigationBar {
-        val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-        val items = listOf(
-            BottomNavItems.Home,
-            BottomNavItems.Cart,
-            BottomNavItems.Order,
-            BottomNavItems.Profile
-        )
-
-        items.forEach { item ->
-            val isSelected = currentRoute?.substringBefore("?") == item.route::class.qualifiedName
-            NavigationBarItem(
-                selected = isSelected,
-                onClick = {
-                    navController.navigate(item.route) {
-                        navController.graph.startDestinationRoute?.let { startRoute ->
-                            popUpTo(startRoute) {
-                                saveState = true
-                            }
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-                label = { Text(text = item.title) },
-                icon = {
-                    Image(
-                        painter = painterResource(id = item.icon),
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(
-                            if (isSelected) Blue else Color.LightGray
-                        )
-                    )
-                },
-                colors = NavigationBarItemDefaults.colors().copy(
-                    selectedIconColor = Blue,
-                    selectedTextColor = Blue,
-                    unselectedTextColor = Color.Gray,
-                    unselectedIconColor = Color.Gray
-                )
-            )
-        }
-    }
 }

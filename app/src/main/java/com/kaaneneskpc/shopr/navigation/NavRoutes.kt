@@ -1,5 +1,6 @@
 package com.kaaneneskpc.shopr.navigation
 
+import com.kaaneneskpc.domain.model.UserProfile
 import com.kaaneneskpc.shopr.model.UiProductModel
 import kotlinx.serialization.Serializable
 
@@ -23,4 +24,7 @@ data class ProductDetails(val product: UiProductModel)
 
 @Serializable
 data class UserAddressRoute(val userAddressWrapper: UserAddressRouteWrapper)
+
+@Serializable
+data class EditProfileRoute(val userProfile: UserProfile)
 
