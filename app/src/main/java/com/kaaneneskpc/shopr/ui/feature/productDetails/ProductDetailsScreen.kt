@@ -64,30 +64,6 @@ fun ProductDetailsScreen(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
-
-            Image(
-                painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(Color.LightGray.copy(alpha = 0.4f))
-                    .padding(8.dp)
-                    .align(Alignment.TopStart)
-            )
-
-            Image(
-                painter = painterResource(id = R.drawable.ic_favorite),
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(Color.LightGray.copy(alpha = 0.4f))
-                    .padding(8.dp)
-                    .align(Alignment.TopEnd)
-            )
         }
         Column(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.fillMaxWidth()) {
