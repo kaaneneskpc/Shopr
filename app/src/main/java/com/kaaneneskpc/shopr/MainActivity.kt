@@ -120,6 +120,12 @@ fun MainScreen() {
                                     // Önceki durumu geri yükle
                                     restoreState = true
                                 }
+                                
+                                // Cart sekmesine tıklandığında CartViewModel'i yenile
+                                if (item is BottomNavItems.Cart) {
+                                    val cartViewModel: com.kaaneneskpc.shopr.ui.feature.cart.CartViewModel by org.koin.java.KoinJavaComponent.inject(com.kaaneneskpc.shopr.ui.feature.cart.CartViewModel::class.java)
+                                    cartViewModel.refreshCart()
+                                }
                             },
                             label = { Text(text = item.title) },
                             icon = {

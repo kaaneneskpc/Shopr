@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,8 +38,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(navController: NavController, viewModel: CartViewModel = koinViewModel()) {
-
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     val cartItems = remember {
         mutableStateOf(emptyList<CartItemModel>())
     }
@@ -48,8 +48,28 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
     val errorMsg = remember {
         mutableStateOf<String?>(null)
     }
-    LaunchedEffect(uiState.value) {
-        when (uiState.value) {
+    val isVisible = remember { mutableStateOf(false) }
+    val pullRefreshState = rememberPullToRefreshState()
+    
+    LaunchedEffect(Unit) {
+        viewModel.refreshCart()
+    }
+    
+    if (pullRefreshState.isRefreshing) {
+        LaunchedEffect(true) {
+            viewModel.refreshCart()
+            pullRefreshState.endRefresh()
+        }
+    }
+    
+    DisposableEffect(Unit) {
+        viewModel.refreshCart()
+        
+        onDispose { }
+    }
+
+    LaunchedEffect(uiState) {
+        when (uiState) {
             is CartEvent.Loading -> {
                 loading.value = true
                 errorMsg.value = null
@@ -58,12 +78,12 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
             is CartEvent.Error -> {
                 // Show error
                 loading.value = false
-                errorMsg.value = (uiState.value as CartEvent.Error).message
+                errorMsg.value = (uiState as CartEvent.Error).message
             }
 
             is CartEvent.Success -> {
                 loading.value = false
-                val data = (uiState.value as CartEvent.Success).message
+                val data = (uiState as CartEvent.Success).message
                 if (data.isEmpty()) {
                     errorMsg.value = "No items in cart"
                 } else {

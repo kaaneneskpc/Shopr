@@ -21,8 +21,10 @@ import coil.compose.AsyncImage
 import com.kaaneneskpc.domain.model.Product
 import com.kaaneneskpc.domain.model.request.AddCartRequestModel
 import com.kaaneneskpc.domain.usecase.AddToCartUseCase
+import com.kaaneneskpc.domain.usecase.GetCartUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 
@@ -31,6 +33,7 @@ fun ProductItem(product: Product, onClick: (Product) -> Unit) {
     var isFavorite by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val addToCartUseCase: AddToCartUseCase by inject(AddToCartUseCase::class.java)
+    val getCartUseCase: GetCartUseCase by inject(GetCartUseCase::class.java)
     val coroutineScope = rememberCoroutineScope()
     
     Card(
@@ -113,13 +116,17 @@ fun ProductItem(product: Product, onClick: (Product) -> Unit) {
                             coroutineScope.launch(Dispatchers.IO) {
                                 try {
                                     val request = AddCartRequestModel(
-                                        product.id,
-                                        product.title,
-                                        product.price,
-                                        1,
-                                        1
+                                        productId = product.id,
+                                        productName = product.title,
+                                        price = product.price,
+                                        quantity = 1,
+                                        userId = 1
                                     )
-                                    addToCartUseCase.execute(request)
+                                    val result = addToCartUseCase.execute(request)
+                                    
+                                    // Sepet verilerini yenile
+                                    delay(500) // API'nin işlemi tamamlaması için kısa bir gecikme
+                                    getCartUseCase.execute()
                                     
                                     // UI thread'inde Toast göster
                                     launch(Dispatchers.Main) {
@@ -134,7 +141,7 @@ fun ProductItem(product: Product, onClick: (Product) -> Unit) {
                                     launch(Dispatchers.Main) {
                                         Toast.makeText(
                                             context,
-                                            "Ürün sepete eklenirken bir hata oluştu",
+                                            "Ürün sepete eklenirken bir hata oluştu: ${e.message}",
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }

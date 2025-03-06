@@ -39,6 +39,11 @@ class CartViewModel(
             }
         }
     }
+    
+    // Sepet verilerini yenilemek için kullanılabilecek public metot
+    fun refreshCart() {
+        getCart()
+    }
 
     fun incrementQuantity(cartItem: CartItemModel) {
         if (cartItem.quantity == 10) return
@@ -79,7 +84,6 @@ class CartViewModel(
             }
         }
     }
-
 }
 
 sealed class CartEvent {
