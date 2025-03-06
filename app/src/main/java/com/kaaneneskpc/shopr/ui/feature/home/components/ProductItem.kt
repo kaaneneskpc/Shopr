@@ -1,5 +1,6 @@
 package com.kaaneneskpc.shopr.ui.feature.home.components
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,15 +13,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kaaneneskpc.domain.model.Product
+import com.kaaneneskpc.domain.model.request.AddCartRequestModel
+import com.kaaneneskpc.domain.usecase.AddToCartUseCase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.inject
 
 @Composable
 fun ProductItem(product: Product, onClick: (Product) -> Unit) {
     var isFavorite by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val addToCartUseCase: AddToCartUseCase by inject(AddToCartUseCase::class.java)
+    val coroutineScope = rememberCoroutineScope()
     
     Card(
         modifier = Modifier
@@ -98,7 +109,38 @@ fun ProductItem(product: Product, onClick: (Product) -> Unit) {
                     )
                     
                     FilledTonalIconButton(
-                        onClick = { /* Add to cart */ },
+                        onClick = { 
+                            coroutineScope.launch(Dispatchers.IO) {
+                                try {
+                                    val request = AddCartRequestModel(
+                                        product.id,
+                                        product.title,
+                                        product.price,
+                                        1,
+                                        1
+                                    )
+                                    addToCartUseCase.execute(request)
+                                    
+                                    // UI thread'inde Toast göster
+                                    launch(Dispatchers.Main) {
+                                        Toast.makeText(
+                                            context,
+                                            "${product.title} sepete eklendi",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                } catch (e: Exception) {
+                                    // Hata durumunda UI thread'inde Toast göster
+                                    launch(Dispatchers.Main) {
+                                        Toast.makeText(
+                                            context,
+                                            "Ürün sepete eklenirken bir hata oluştu",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                            }
+                        },
                         modifier = Modifier.size(32.dp),
                         colors = IconButtonDefaults.filledTonalIconButtonColors(
                             containerColor = MaterialTheme.colorScheme.secondaryContainer
