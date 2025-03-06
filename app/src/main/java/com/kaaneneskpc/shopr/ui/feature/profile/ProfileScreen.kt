@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import com.kaaneneskpc.domain.model.UserProfile
 import com.kaaneneskpc.shopr.model.toUserAddress
 import com.kaaneneskpc.shopr.navigation.EditProfileRoute
+import com.kaaneneskpc.shopr.navigation.OrdersScreen
 import com.kaaneneskpc.shopr.navigation.UserAddressRoute
 import com.kaaneneskpc.shopr.navigation.UserAddressRouteWrapper
 import com.kaaneneskpc.shopr.ui.feature.profile.components.ProfileHeader
@@ -119,7 +120,8 @@ fun ProfileScreen(
                     onNotificationsClick = { /* Bildirim ayarları ekranına git */ },
                     onLanguageClick = { /* Dil ayarları ekranına git */ },
                     onThemeClick = { /* Tema ayarları ekranına git */ },
-                    onLogoutClick = { showLogoutDialog = true }
+                    onLogoutClick = { showLogoutDialog = true },
+                    onOrdersClick = { navController.navigate(OrdersScreen) }
                 )
             }
         }
@@ -352,6 +354,7 @@ fun ProfileContent(
     userProfile: UserProfile,
     onEditProfileClick: () -> Unit,
     onAddressesClick: () -> Unit,
+    onOrdersClick: () -> Unit,
     onPasswordChangeClick: () -> Unit,
     onNotificationsClick: () -> Unit,
     onLanguageClick: () -> Unit,
@@ -384,6 +387,13 @@ fun ProfileContent(
                     title = "Adreslerim",
                     subtitle = "Teslimat adreslerinizi yönetin",
                     onClick = onAddressesClick
+                )
+
+                ProfileMenuItem(
+                    icon = Icons.Default.ShoppingCart,
+                    title = "Siparişlerim",
+                    subtitle = "Siparişlerinizi yönetin",
+                    onClick = onOrdersClick
                 )
 
                 ProfileMenuItem(

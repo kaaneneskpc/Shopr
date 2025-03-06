@@ -10,6 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.kaaneneskpc.domain.model.Product
 import com.kaaneneskpc.shopr.model.UiProductModel
 import com.kaaneneskpc.shopr.navigation.ProductDetails
 import com.kaaneneskpc.shopr.ui.feature.home.components.HomeCategoriesRow
@@ -21,7 +22,33 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinViewModel()) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    val searchResults = viewModel.searchResults.collectAsStateWithLifecycle().value
     var searchQuery by remember { mutableStateOf("") }
+    
+    // Handle search functionality with safety limits
+    val handleSearch: (String) -> Unit = { query ->
+        try {
+            // Limit query length for safety
+            val safeQuery = query.take(10)
+            if (safeQuery != query) {
+                searchQuery = safeQuery
+            }
+            viewModel.searchProducts(safeQuery)
+        } catch (e: Exception) {
+            // If there's an error, clear the search query
+            searchQuery = ""
+        }
+    }
+    
+    // Handle product click with safety
+    val handleProductClick: (Product) -> Unit = { product ->
+        try {
+            navController.navigate(ProductDetails(UiProductModel.fromProduct(product)))
+        } catch (e: Exception) {
+            // Handle navigation error silently
+            searchQuery = ""
+        }
+    }
     
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -30,13 +57,21 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp) // Reduced spacing
         ) {
             item {
                 ProfileHeader()
+                
+                // Add some spacing
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // Search bar with limited results
                 SearchBar(
                     value = searchQuery,
                     onTextChanged = { searchQuery = it },
+                    searchResults = searchResults,
+                    onProductClick = handleProductClick,
+                    onSearch = handleSearch,
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
@@ -84,9 +119,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
                             HomeProductRow(
                                 products = uiState.featured,
                                 title = "Featured Products",
-                                onClick = { product ->
-                                    navController.navigate(ProductDetails(UiProductModel.fromProduct(product)))
-                                }
+                                onClick = handleProductClick
                             )
                         }
                     }
@@ -96,9 +129,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
                             HomeProductRow(
                                 products = uiState.popularProducts,
                                 title = "Popular Products",
-                                onClick = { product ->
-                                    navController.navigate(ProductDetails(UiProductModel.fromProduct(product)))
-                                }
+                                onClick = handleProductClick
                             )
                         }
                     }
