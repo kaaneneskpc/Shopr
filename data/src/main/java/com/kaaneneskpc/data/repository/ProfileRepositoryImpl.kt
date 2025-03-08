@@ -8,7 +8,6 @@ import java.util.Date
 
 class ProfileRepositoryImpl : ProfileRepository {
     
-    // Geçici olarak mock veri kullanıyoruz
     private val mockUserProfile = UserProfile(
         userId = 1,
         name = "Kaan Enes",
@@ -27,32 +26,26 @@ class ProfileRepositoryImpl : ProfileRepository {
     )
     
     override suspend fun getUserProfile(userId: Int): ResultWrapper<UserProfile> {
-        // Gerçek uygulamada burada API çağrısı yapılacak
         return ResultWrapper.Success(mockUserProfile)
     }
 
     override suspend fun updateUserProfile(userProfile: UserProfile): ResultWrapper<UserProfile> {
-        // Gerçek uygulamada burada API çağrısı yapılacak
         return ResultWrapper.Success(userProfile)
     }
 
     override suspend fun addAddress(userId: Int, address: AddressDomainModel): ResultWrapper<AddressDomainModel> {
-        // Gerçek uygulamada burada API çağrısı yapılacak
         return ResultWrapper.Success(address)
     }
 
     override suspend fun updateAddress(userId: Int, addressId: Int, address: AddressDomainModel): ResultWrapper<AddressDomainModel> {
-        // Gerçek uygulamada burada API çağrısı yapılacak
         return ResultWrapper.Success(address)
     }
 
     override suspend fun deleteAddress(userId: Int, addressId: Int): ResultWrapper<Boolean> {
-        // Gerçek uygulamada burada API çağrısı yapılacak
         return ResultWrapper.Success(true)
     }
 
     override suspend fun updatePassword(userId: Int, oldPassword: String, newPassword: String): ResultWrapper<Boolean> {
-        // Gerçek uygulamada burada API çağrısı yapılacak
         return ResultWrapper.Success(true)
     }
 } 

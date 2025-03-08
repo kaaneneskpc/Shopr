@@ -52,8 +52,7 @@ fun ProfileHeader(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
-                
-                // Profil resmi
+
                 Box(
                     modifier = Modifier
                         .size(120.dp)
@@ -95,7 +94,7 @@ fun ProfileHeader(
                             tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
-                    
+
                     FloatingActionButton(
                         onClick = onEditClick,
                         modifier = Modifier
@@ -112,38 +111,34 @@ fun ProfileHeader(
                         )
                     }
                 }
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
-                
-                // Kullanıcı adı
+
                 Text(
                     text = userProfile.name,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
-                
+
                 Spacer(modifier = Modifier.height(4.dp))
-                
-                // E-posta
+
                 Text(
                     text = userProfile.email,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                 )
-                
+
                 Spacer(modifier = Modifier.height(4.dp))
-                
-                // Telefon numarası
+
                 Text(
                     text = userProfile.phoneNumber,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
                 )
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
-                
-                // Üyelik bilgisi
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -158,14 +153,16 @@ fun ProfileHeader(
                         tonalElevation = 1.dp
                     ) {
                         Text(
-                            text = "Üyelik: ${userProfile.createdAt.split(" ").firstOrNull() ?: ""}",
+                            text = "Üyelik: ${
+                                userProfile.createdAt.split(" ").firstOrNull() ?: ""
+                            }",
                             style = MaterialTheme.typography.bodySmall,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                             color = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }

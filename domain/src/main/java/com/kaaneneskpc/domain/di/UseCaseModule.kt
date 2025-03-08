@@ -25,7 +25,6 @@ val useCaseModule = module {
     factory { PlaceOrderUseCase(get()) }
     factory { OrderListUseCase(get()) }
     
-    // Profile related use cases
     factory { GetUserProfileUseCase(get()) }
     factory { UpdateUserProfileUseCase(get()) }
     factory { UpdatePasswordUseCase(get()) }

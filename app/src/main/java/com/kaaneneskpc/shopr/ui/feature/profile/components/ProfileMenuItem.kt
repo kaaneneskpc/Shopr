@@ -41,7 +41,6 @@ fun ProfileMenuItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // İkon arka planı
             Box(
                 modifier = Modifier
                     .size(40.dp)

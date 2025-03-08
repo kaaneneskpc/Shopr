@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.NavigationBar
@@ -19,13 +18,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -82,17 +79,13 @@ fun MainScreen() {
         BottomNavItems.Profile
     )
     
-    // Hangi ekranlarda bottom navigation bar'ı göstereceğimizi belirleyen liste
     val bottomNavRoutes = bottomNavItems.map { it.route::class.qualifiedName }
     
-    // Bottom navigation bar'ın görünürlüğünü kontrol eden state
     val shouldShowBottomNav = rememberSaveable { mutableStateOf(true) }
     
-    // Mevcut destinasyonu takip et
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     
-    // Mevcut rota bottom nav rotalarından biri mi kontrol et
     shouldShowBottomNav.value = currentDestination?.route?.let { route ->
         bottomNavRoutes.contains(route.substringBefore("?"))
     } ?: false
@@ -111,17 +104,13 @@ fun MainScreen() {
                             selected = isSelected,
                             onClick = {
                                 navController.navigate(item.route) {
-                                    // Başlangıç hedefine kadar pop yaparak gereksiz ekranları stack'ten temizle
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
                                     }
-                                    // Aynı hedef için birden fazla kopya oluşmasını engelle
                                     launchSingleTop = true
-                                    // Önceki durumu geri yükle
                                     restoreState = true
                                 }
                                 
-                                // Cart sekmesine tıklandığında CartViewModel'i yenile
                                 if (item is BottomNavItems.Cart) {
                                     val cartViewModel: com.kaaneneskpc.shopr.ui.feature.cart.CartViewModel by org.koin.java.KoinJavaComponent.inject(com.kaaneneskpc.shopr.ui.feature.cart.CartViewModel::class.java)
                                     cartViewModel.refreshCart()

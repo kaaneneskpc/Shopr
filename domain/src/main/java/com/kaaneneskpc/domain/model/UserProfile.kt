@@ -11,8 +11,8 @@ data class UserProfile(
     val name: String,
     val email: String,
     val phoneNumber: String,
-    val profileImage: String?, // Profil resmi URL'si
-    val defaultAddress: AddressDomainModel?, // Varsayılan adres
-    val createdAt: String, // Hesap oluşturma tarihi
-    val lastLogin: String // Son giriş tarihi
+    val profileImage: String?,
+    val defaultAddress: AddressDomainModel?,
+    val createdAt: String,
+    val lastLogin: String
 ) : Parcelable 

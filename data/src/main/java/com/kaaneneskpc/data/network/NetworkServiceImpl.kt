@@ -133,7 +133,6 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
         return try {
             val response = client.request(url) {
                 this.method = method
-                // Apply query parameters
                 url {
                     this.parameters.appendAll(Parameters.build {
                         parameters.forEach { (key, value) ->
@@ -141,11 +140,9 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
                         }
                     })
                 }
-                // Apply headers
                 headers.forEach { (key, value) ->
                     header(key, value)
                 }
-                // Set body for POST, PUT, etc.
                 if (body != null) {
                     setBody(body)
                 }

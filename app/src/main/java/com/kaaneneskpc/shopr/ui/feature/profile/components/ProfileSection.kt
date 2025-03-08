@@ -18,7 +18,6 @@ fun ProfileSection(
             .fillMaxWidth()
             .padding(vertical = 12.dp)
     ) {
-        // Başlık
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
