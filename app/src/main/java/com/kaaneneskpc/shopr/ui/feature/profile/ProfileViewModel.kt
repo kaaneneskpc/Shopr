@@ -24,7 +24,6 @@ class ProfileViewModel(
     private val _passwordUpdateState = MutableStateFlow<PasswordUpdateState>(PasswordUpdateState.Idle)
     val passwordUpdateState: StateFlow<PasswordUpdateState> = _passwordUpdateState.asStateFlow()
 
-    // Geçici olarak sabit bir userId kullanıyoruz, gerçek uygulamada bu değer oturum yönetiminden gelmelidir
     private val userId = 1
 
     init {

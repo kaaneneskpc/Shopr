@@ -1,7 +1,5 @@
 package com.kaaneneskpc.shopr.ui.feature.orders
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -38,7 +36,6 @@ fun OrdersScreen(viewModel: OrdersViewModel = koinViewModel()) {
             color = MaterialTheme.colorScheme.onSurface
         )
         
-        // Tab Row
         TabRow(
             selectedTabIndex = pagerState.currentPage,
             containerColor = MaterialTheme.colorScheme.surface,

@@ -25,27 +25,22 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
     val searchResults = viewModel.searchResults.collectAsStateWithLifecycle().value
     var searchQuery by remember { mutableStateOf("") }
     
-    // Handle search functionality with safety limits
     val handleSearch: (String) -> Unit = { query ->
         try {
-            // Limit query length for safety
             val safeQuery = query.take(10)
             if (safeQuery != query) {
                 searchQuery = safeQuery
             }
             viewModel.searchProducts(safeQuery)
         } catch (e: Exception) {
-            // If there's an error, clear the search query
             searchQuery = ""
         }
     }
     
-    // Handle product click with safety
     val handleProductClick: (Product) -> Unit = { product ->
         try {
             navController.navigate(ProductDetails(UiProductModel.fromProduct(product)))
         } catch (e: Exception) {
-            // Handle navigation error silently
             searchQuery = ""
         }
     }
@@ -57,15 +52,13 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp) // Reduced spacing
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
                 ProfileHeader()
                 
-                // Add some spacing
                 Spacer(modifier = Modifier.height(8.dp))
                 
-                // Search bar with limited results
                 SearchBar(
                     value = searchQuery,
                     onTextChanged = { searchQuery = it },

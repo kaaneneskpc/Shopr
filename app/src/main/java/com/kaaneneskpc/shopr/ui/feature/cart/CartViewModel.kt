@@ -40,7 +40,6 @@ class CartViewModel(
         }
     }
     
-    // Sepet verilerini yenilemek için kullanılabilecek public metot
     fun refreshCart() {
         getCart()
     }

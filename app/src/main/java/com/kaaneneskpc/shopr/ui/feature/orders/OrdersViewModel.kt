@@ -43,7 +43,7 @@ class OrdersViewModel(
 }
 
 sealed class OrdersEvent {
-    object Loading : OrdersEvent()
+    data object Loading : OrdersEvent()
     data class Success(val data: List<OrdersData>) : OrdersEvent()
     data class Error(val errorMsg: String) : OrdersEvent()
 }

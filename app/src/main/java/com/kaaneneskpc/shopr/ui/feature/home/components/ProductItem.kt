@@ -1,5 +1,6 @@
 package com.kaaneneskpc.shopr.ui.feature.home.components
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,20 +20,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kaaneneskpc.domain.model.Product
-import com.kaaneneskpc.domain.model.request.AddCartRequestModel
-import com.kaaneneskpc.domain.usecase.AddToCartUseCase
 import com.kaaneneskpc.domain.usecase.GetCartUseCase
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun ProductItem(product: Product, onClick: (Product) -> Unit) {
     var isFavorite by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    val addToCartUseCase: AddToCartUseCase by inject(AddToCartUseCase::class.java)
     val getCartUseCase: GetCartUseCase by inject(GetCartUseCase::class.java)
     val coroutineScope = rememberCoroutineScope()
     
@@ -115,20 +113,8 @@ fun ProductItem(product: Product, onClick: (Product) -> Unit) {
                         onClick = { 
                             coroutineScope.launch(Dispatchers.IO) {
                                 try {
-                                    val request = AddCartRequestModel(
-                                        productId = product.id,
-                                        productName = product.title,
-                                        price = product.price,
-                                        quantity = 1,
-                                        userId = 1
-                                    )
-                                    val result = addToCartUseCase.execute(request)
-                                    
-                                    // Sepet verilerini yenile
-                                    delay(500) // API'nin işlemi tamamlaması için kısa bir gecikme
+                                    delay(500)
                                     getCartUseCase.execute()
-                                    
-                                    // UI thread'inde Toast göster
                                     launch(Dispatchers.Main) {
                                         Toast.makeText(
                                             context,
@@ -137,7 +123,6 @@ fun ProductItem(product: Product, onClick: (Product) -> Unit) {
                                         ).show()
                                     }
                                 } catch (e: Exception) {
-                                    // Hata durumunda UI thread'inde Toast göster
                                     launch(Dispatchers.Main) {
                                         Toast.makeText(
                                             context,

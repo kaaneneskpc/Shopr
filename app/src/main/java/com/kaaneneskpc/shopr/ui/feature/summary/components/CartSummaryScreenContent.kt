@@ -1,6 +1,5 @@
 package com.kaaneneskpc.shopr.ui.feature.summary.components
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items

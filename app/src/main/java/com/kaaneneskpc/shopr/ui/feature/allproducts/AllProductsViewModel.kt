@@ -51,7 +51,7 @@ class AllProductsViewModel(
 }
 
 sealed class AllProductsScreenEvent {
-    object Loading : AllProductsScreenEvent()
+    data object Loading : AllProductsScreenEvent()
     data class Success(val products: List<Product>) : AllProductsScreenEvent()
     data class Error(val message: String) : AllProductsScreenEvent()
 } 

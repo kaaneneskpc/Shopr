@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.kaaneneskpc.data.model.response.orders.OrderItem
 import com.kaaneneskpc.domain.model.OrdersData
 
 @Composable

@@ -7,14 +7,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.kaaneneskpc.domain.model.UserProfile
@@ -36,7 +35,7 @@ fun EditProfileScreen(
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Geri"
                         )
                     }
@@ -44,13 +43,6 @@ fun EditProfileScreen(
                 actions = {
                     TextButton(
                         onClick = {
-                            // Profil bilgilerini güncelle ve geri dön
-                            val updatedProfile = userProfile.copy(
-                                name = name,
-                                email = email,
-                                phoneNumber = phoneNumber
-                            )
-                            // TODO: ViewModel üzerinden profil güncelleme işlemi yapılacak
                             navController.popBackStack()
                         }
                     ) {
@@ -68,7 +60,6 @@ fun EditProfileScreen(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Profil resmi
             Box(
                 modifier = Modifier
                     .size(120.dp)
@@ -91,7 +82,7 @@ fun EditProfileScreen(
                 }
                 
                 FloatingActionButton(
-                    onClick = { /* Profil resmi değiştirme işlemi */ },
+                    onClick = {},
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .size(36.dp),
@@ -108,7 +99,6 @@ fun EditProfileScreen(
             
             Spacer(modifier = Modifier.height(24.dp))
             
-            // Form alanları
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
@@ -159,12 +149,6 @@ fun EditProfileScreen(
             
             Button(
                 onClick = {
-                    val updatedProfile = userProfile.copy(
-                        name = name,
-                        email = email,
-                        phoneNumber = phoneNumber
-                    )
-                    // TODO: ViewModel üzerinden profil güncelleme işlemi yapılacak
                     navController.popBackStack()
                 },
                 modifier = Modifier

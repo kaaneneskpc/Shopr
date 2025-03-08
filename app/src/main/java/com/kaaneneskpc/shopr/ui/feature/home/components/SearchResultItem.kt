@@ -21,16 +21,14 @@ fun SearchResultItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Simple row with fixed height instead of a Card
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(70.dp) // Fixed height
+            .height(70.dp)
             .clickable(onClick = onClick)
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Product image with fixed size
         Box(
             modifier = Modifier
                 .size(50.dp)
@@ -43,14 +41,12 @@ fun SearchResultItem(
                 modifier = Modifier.fillMaxSize()
             )
         }
-        
-        // Product details with weight to fill remaining space
+
         Column(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 12.dp)
         ) {
-            // Title with ellipsis for long text
             Text(
                 text = product.title,
                 style = MaterialTheme.typography.bodyMedium.copy(
@@ -59,10 +55,7 @@ fun SearchResultItem(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            
             Spacer(modifier = Modifier.height(4.dp))
-            
-            // Price
             Text(
                 text = product.priceString,
                 style = MaterialTheme.typography.bodySmall.copy(

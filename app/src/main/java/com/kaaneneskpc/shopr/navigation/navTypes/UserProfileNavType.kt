@@ -3,7 +3,6 @@ package com.kaaneneskpc.shopr.navigation.navTypes
 import android.os.Bundle
 import androidx.navigation.NavType
 import com.kaaneneskpc.domain.model.UserProfile
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

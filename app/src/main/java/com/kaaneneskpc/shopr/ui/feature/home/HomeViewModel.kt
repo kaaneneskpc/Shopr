@@ -15,10 +15,8 @@ class HomeViewModel(private val getProductsUseCase: GetProductsUseCase, private 
     private val _uiState = MutableStateFlow<HomeScreenEvent>(HomeScreenEvent.Loading)
     val uiState = _uiState.asStateFlow()
     
-    // Store all products for search functionality
     private val _allProducts = MutableStateFlow<List<Product>>(emptyList())
     
-    // Search results state
     private val _searchResults = MutableStateFlow<List<Product>>(emptyList())
     val searchResults = _searchResults.asStateFlow()
 
@@ -34,9 +32,8 @@ class HomeViewModel(private val getProductsUseCase: GetProductsUseCase, private 
                 val popularProducts = getProducts(2)
                 val categories = getCategory()
                 
-                // Store all products for search
                 val allProducts = featuredProducts + popularProducts
-                _allProducts.value = allProducts.distinctBy { it.id }.take(50) // Limit to 50 products max
+                _allProducts.value = allProducts.distinctBy { it.id }.take(50)
                 
                 if(featuredProducts.isEmpty() && popularProducts.isEmpty() && categories.isNotEmpty()) {
                     _uiState.value = HomeScreenEvent.Error("Error fetching products")
@@ -56,7 +53,6 @@ class HomeViewModel(private val getProductsUseCase: GetProductsUseCase, private 
                 return
             }
             
-            // Limit search to first 5 characters to avoid excessive filtering
             val searchTerm = query.take(5)
             
             val filteredProducts = _allProducts.value.filter { product ->
@@ -64,10 +60,8 @@ class HomeViewModel(private val getProductsUseCase: GetProductsUseCase, private 
                 product.description.contains(searchTerm, ignoreCase = true)
             }
             
-            // Strictly limit the number of search results
             _searchResults.value = filteredProducts.take(5)
         } catch (e: Exception) {
-            // Handle any exceptions that might occur during search
             _searchResults.value = emptyList()
         }
     }
@@ -90,7 +84,7 @@ class HomeViewModel(private val getProductsUseCase: GetProductsUseCase, private 
         getProductsUseCase.execute(category).let { result ->
             when (result) {
                 is ResultWrapper.Success -> {
-                    return result.value.products.take(20) // Limit to 20 products per category
+                    return result.value.products.take(20)
                 }
 
                 is ResultWrapper.Failure -> {

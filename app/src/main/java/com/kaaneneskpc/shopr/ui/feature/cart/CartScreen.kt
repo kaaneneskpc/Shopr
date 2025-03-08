@@ -48,7 +48,6 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
     val errorMsg = remember {
         mutableStateOf<String?>(null)
     }
-    val isVisible = remember { mutableStateOf(false) }
     val pullRefreshState = rememberPullToRefreshState()
     
     LaunchedEffect(Unit) {
@@ -78,12 +77,12 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
             is CartEvent.Error -> {
                 // Show error
                 loading.value = false
-                errorMsg.value = (uiState as CartEvent.Error).message
+                errorMsg.value = uiState.message
             }
 
             is CartEvent.Success -> {
                 loading.value = false
-                val data = (uiState as CartEvent.Success).message
+                val data = uiState.message
                 if (data.isEmpty()) {
                     errorMsg.value = "No items in cart"
                 } else {

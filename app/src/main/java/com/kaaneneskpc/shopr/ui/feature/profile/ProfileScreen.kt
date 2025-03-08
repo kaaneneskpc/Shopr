@@ -106,20 +106,17 @@ fun ProfileScreen(
                 val userProfile = (uiState as ProfileUiState.Success).userProfile
                 ProfileContent(
                     userProfile = userProfile,
-                    onEditProfileClick = { 
-                        // Profil düzenleme ekranına git
+                    onEditProfileClick = {
                         navController.navigate(EditProfileRoute(userProfile))
                     },
-                    onAddressesClick = { 
-                        // Adreslerim ekranına git
-                        // AddressDomainModel'i UserAddress'e dönüştürüyoruz
+                    onAddressesClick = {
                         val userAddress = userProfile.defaultAddress?.toUserAddress()
                         navController.navigate(UserAddressRoute(UserAddressRouteWrapper(userAddress)))
                     },
                     onPasswordChangeClick = { showPasswordDialog = true },
-                    onNotificationsClick = { /* Bildirim ayarları ekranına git */ },
-                    onLanguageClick = { /* Dil ayarları ekranına git */ },
-                    onThemeClick = { /* Tema ayarları ekranına git */ },
+                    onNotificationsClick = { },
+                    onLanguageClick = { },
+                    onThemeClick = { },
                     onLogoutClick = { showLogoutDialog = true },
                     onOrdersClick = { navController.navigate(OrdersScreen) }
                 )

@@ -17,14 +17,6 @@ data class UserAddress(
     override fun toString(): String {
         return "$addressLine, $city, $state, $postalCode, $country"
     }
-
-    fun toAddressDataModel() = AddressDomainModel(
-        addressLine,
-        city,
-        state,
-        postalCode,
-        country
-    )
 }
 
 // Extension function to convert AddressDomainModel to UserAddress

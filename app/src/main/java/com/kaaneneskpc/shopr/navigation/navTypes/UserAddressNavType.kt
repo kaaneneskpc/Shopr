@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+@Suppress("DEPRECATION")
 val userAddressNavType = object : NavType<UserAddressRouteWrapper>(isNullableAllowed = false) {
     override fun get(bundle: Bundle, key: String): UserAddressRouteWrapper? {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
