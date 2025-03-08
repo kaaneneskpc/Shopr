@@ -9,20 +9,17 @@
 ## 📷 Screenshoots
 
 # Home
+<img src="https://github.com/user-attachments/assets/c905b362-1346-469f-88e0-cb42f86697a0" height = "600px"/> <img src="https://github.com/user-attachments/assets/d62c76cb-248f-49cb-98c8-e5ae9145f0e3" height = "600px"/> <img src="https://github.com/user-attachments/assets/5e00fce2-c639-40f4-8393-88d89d4d6dca" height = "600px"/>
 
-| --------- | ------ | ------ |
-|<img src="https://github.com/user-attachments/assets/c905b362-1346-469f-88e0-cb42f86697a0" height = "600px"/>|<img src="https://github.com/user-attachments/assets/d62c76cb-248f-49cb-98c8-e5ae9145f0e3" height = "600px"/>|
+# Cart
+<img src="https://github.com/user-attachments/assets/a75b21ed-f773-45f6-85eb-e379375a8e49" height = "600px"/> <img src="https://github.com/user-attachments/assets/ccd26c61-f522-4697-9f0e-030801391994" height = "600px"/>
 
+# Orders And Profile
+<img src="https://github.com/user-attachments/assets/3d22124e-7beb-4f07-b274-c28999e09ed3" height = "600px"/> <img src="https://github.com/user-attachments/assets/ed0e4032-1236-44d7-a22d-03e637c226e2" height = "600px"/>
 
-</td>
-<td width="50%">
-<h3 align="center">iOS</h3>
-   
-https://github.com/user-attachments/assets/a2c88d2c-6930-4e96-997e-ae1cfa0eb4db
+# Address
+<img src="https://github.com/user-attachments/assets/49c41937-6f1b-4aa4-b7bb-b271ad00e495" height = "600px"/> <img src="https://github.com/user-attachments/assets/fcebccfe-6430-4e62-b320-b67f9a0a0c0b" height = "600px"/>
 
-</td>
-</tr>
-</table>
 
 ## 📌 Features
 
