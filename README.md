@@ -8,14 +8,11 @@
 
 ## 📷 Screenshoots
 
-<table>
-<tr>
-<td width="50%">
-<h3 align="center">Home</h3>
+# Home
 
-![Screenshot_20250307_020805](https://github.com/user-attachments/assets/c905b362-1346-469f-88e0-cb42f86697a0)
+| --------- | ------ | ------ |
+|<img src="https://github.com/user-attachments/assets/c905b362-1346-469f-88e0-cb42f86697a0" height = "600px"/>|<img src="https://github.com/user-attachments/assets/d62c76cb-248f-49cb-98c8-e5ae9145f0e3" height = "600px"/>|
 
-![Screenshot_20250307_022202](https://github.com/user-attachments/assets/d62c76cb-248f-49cb-98c8-e5ae9145f0e3)
 
 </td>
 <td width="50%">
