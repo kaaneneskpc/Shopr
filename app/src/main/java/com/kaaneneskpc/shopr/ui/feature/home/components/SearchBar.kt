@@ -73,7 +73,6 @@ fun SearchBar(
             maxLines = 1
         )
         
-        // Display search results in a separate container with fixed height
         if (value.isNotEmpty()) {
             Card(
                 modifier = Modifier
@@ -84,7 +83,6 @@ fun SearchBar(
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
                 if (searchResults.isEmpty()) {
-                    // No results found
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()

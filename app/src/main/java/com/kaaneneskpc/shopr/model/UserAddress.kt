@@ -19,7 +19,6 @@ data class UserAddress(
     }
 }
 
-// Extension function to convert AddressDomainModel to UserAddress
 fun AddressDomainModel.toUserAddress() = UserAddress(
     addressLine = this.addressLine,
     city = this.city,

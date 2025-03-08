@@ -124,7 +124,6 @@ fun ProfileScreen(
         }
     }
 
-    // Şifre değiştirme dialog'u
     if (showPasswordDialog) {
         var oldPassword by remember { mutableStateOf("") }
         var newPassword by remember { mutableStateOf("") }
@@ -299,7 +298,6 @@ fun ProfileScreen(
         )
     }
 
-    // Çıkış yapma onay dialog'u
     if (showLogoutDialog) {
         AlertDialog(
             onDismissRequest = { showLogoutDialog = false },
@@ -322,7 +320,6 @@ fun ProfileScreen(
                 Button(
                     onClick = {
                         showLogoutDialog = false
-                        // Çıkış yapma işlemi
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error,

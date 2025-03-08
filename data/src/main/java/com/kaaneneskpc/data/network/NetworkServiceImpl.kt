@@ -147,7 +147,6 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
                     setBody(body)
                 }
 
-                // Set content type
                 contentType(ContentType.Application.Json)
             }.body<T>()
             val result: R = mapper?.invoke(response) ?: response as R

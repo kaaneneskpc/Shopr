@@ -75,7 +75,6 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
             }
 
             is CartEvent.Error -> {
-                // Show error
                 loading.value = false
                 errorMsg.value = uiState.message
             }
@@ -136,7 +135,6 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
                 }
             }
             if (loading.value) {
-                // Show loading
                 Column(modifier = Modifier.align(Alignment.Center)) {
                     CircularProgressIndicator(modifier = Modifier.size(48.dp))
                     Text(text = "Loading...")
