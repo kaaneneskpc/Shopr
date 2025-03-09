@@ -105,7 +105,7 @@ Contributions are welcome! 🎉 Feel free to fork the repository and submit a Pu
 
 ## Inspired
 
-This repo inspried from ![furqanullah717](https://github.com/furqanullah717/Shopper-compose)
+This repo inspried from [furqanullah717](https://github.com/furqanullah717/Shopper-compose)
 
 ## 📝 License
 
