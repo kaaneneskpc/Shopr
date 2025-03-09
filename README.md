@@ -6,6 +6,10 @@
 
 ---
 
+## Inspired (Credit By)
+
+This repo inspried from [furqanullah717](https://github.com/furqanullah717/Shopper-compose)
+
 ## 📷 Screenshoots
 
 # Home
@@ -102,10 +106,6 @@ Contributions are welcome! 🎉 Feel free to fork the repository and submit a Pu
 5. Open a Pull Request 🔥
 
 ---
-
-## Inspired
-
-This repo inspried from [furqanullah717](https://github.com/furqanullah717/Shopper-compose)
 
 ## 📝 License
 
