@@ -1,8 +1,8 @@
 # 🛍️ Shopr - Multi-Module Android Shopping App
 
-![Android](https://img.shields.io/badge/Android-✅-green) ![Kotlin](https://img.shields.io/badge/Kotlin-2.0.0-blue) ![Jetpack%20Compose](https://img.shields.io/badge/Jetpack%20Compose-%F0%9F%9A%80-orange) ![Koin](https://img.shields.io/badge/Koin-DI-yellow) ![Open%20Source](https://img.shields.io/badge/Open%20Source-%E2%9C%94%EF%B8%8F-lightgrey)
+![Android](https://img.shields.io/badge/Android-✅-green) ![Kotlin](https://img.shields.io/badge/Kotlin-2.0.0-blue) ![Jetpack%20Compose](https://img.shields.io/badge/Jetpack%20Compose-%F0%9F%9A%80-orange) ![Koin](https://img.shields.io/badge/Koin-DI-yellow)
 
-🚀 **Shopr** is a **multi-module Android shopping app** built with **Jetpack Compose, Kotlin, and a scalable architecture** to enhance maintainability and build times. This project is designed to demonstrate best practices in modularization, dependency injection, and UI/UX.
+🚀 **Shopr** is a **multi-module Android shopping app** built with **Jetpack Compose, Kotlin, and a scalable architecture** to enhance maintainability and build times. This project is designed to demonstrate best practices in modularization, dependency injection, and UI/UX. 
 
 ---
 
@@ -102,6 +102,10 @@ Contributions are welcome! 🎉 Feel free to fork the repository and submit a Pu
 5. Open a Pull Request 🔥
 
 ---
+
+## Inspired
+
+This repo inspried from ![Kotlin](https://github.com/furqanullah717/Shopper-compose)
 
 ## 📝 License
 
