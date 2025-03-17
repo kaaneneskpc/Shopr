@@ -42,6 +42,7 @@ import com.kaaneneskpc.shopr.navigation.ProductDetails
 import com.kaaneneskpc.shopr.navigation.ProfileScreen
 import com.kaaneneskpc.shopr.navigation.UserAddressRoute
 import com.kaaneneskpc.shopr.navigation.UserAddressRouteWrapper
+import com.kaaneneskpc.shopr.navigation.WishlistsScreen
 import com.kaaneneskpc.shopr.navigation.navTypes.productNavType
 import com.kaaneneskpc.shopr.navigation.navTypes.userAddressNavType
 import com.kaaneneskpc.shopr.navigation.navTypes.userProfileNavType
@@ -53,6 +54,7 @@ import com.kaaneneskpc.shopr.ui.feature.profile.ProfileScreen
 import com.kaaneneskpc.shopr.ui.feature.profile.edit.EditProfileScreen
 import com.kaaneneskpc.shopr.ui.feature.summary.CartSummaryScreen
 import com.kaaneneskpc.shopr.ui.feature.userAddress.UserAddressScreen
+import com.kaaneneskpc.shopr.ui.feature.wishlist.WishlistScreen
 import com.kaaneneskpc.shopr.ui.theme.Blue
 import com.kaaneneskpc.shopr.ui.theme.ShoprTheme
 import kotlin.reflect.typeOf
@@ -75,6 +77,7 @@ fun MainScreen() {
     val bottomNavItems = listOf(
         BottomNavItems.Home,
         BottomNavItems.Cart,
+        BottomNavItems.Wishlist,
         BottomNavItems.Order,
         BottomNavItems.Profile
     )
@@ -186,6 +189,11 @@ fun MainScreen() {
                         userProfile = editProfileRoute.userProfile
                     )
                 }
+                composable<WishlistsScreen> {
+                    WishlistScreen(
+                        navController = navController
+                    )
+                }
             }
         }
     }
@@ -194,6 +202,7 @@ fun MainScreen() {
 sealed class BottomNavItems(val route: Any, val title: String, val icon: Int) {
     data object Home : BottomNavItems(HomeScreen, "Home", icon = R.drawable.ic_home)
     data object Cart : BottomNavItems(CartScreen, "Cart", icon = R.drawable.ic_cart)
+    data object Wishlist : BottomNavItems(WishlistsScreen, "Wishlist", icon = R.drawable.ic_favorite)
     data object Order : BottomNavItems(OrdersScreen, "Orders", icon = R.drawable.ic_orders)
     data object Profile : BottomNavItems(ProfileScreen, "Profile", icon = R.drawable.ic_profile_bn)
 }

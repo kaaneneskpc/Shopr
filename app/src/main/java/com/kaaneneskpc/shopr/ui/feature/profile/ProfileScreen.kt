@@ -21,6 +21,7 @@ import com.kaaneneskpc.shopr.navigation.EditProfileRoute
 import com.kaaneneskpc.shopr.navigation.OrdersScreen
 import com.kaaneneskpc.shopr.navigation.UserAddressRoute
 import com.kaaneneskpc.shopr.navigation.UserAddressRouteWrapper
+import com.kaaneneskpc.shopr.navigation.WishlistsScreen
 import com.kaaneneskpc.shopr.ui.feature.profile.components.ProfileHeader
 import com.kaaneneskpc.shopr.ui.feature.profile.components.ProfileMenuItem
 import com.kaaneneskpc.shopr.ui.feature.profile.components.ProfileSection
@@ -118,7 +119,8 @@ fun ProfileScreen(
                     onLanguageClick = { },
                     onThemeClick = { },
                     onLogoutClick = { showLogoutDialog = true },
-                    onOrdersClick = { navController.navigate(OrdersScreen) }
+                    onOrdersClick = { navController.navigate(OrdersScreen) },
+                    onWishlistClick = { navController.navigate(WishlistsScreen) }
                 )
             }
         }
@@ -353,7 +355,8 @@ fun ProfileContent(
     onNotificationsClick: () -> Unit,
     onLanguageClick: () -> Unit,
     onThemeClick: () -> Unit,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    onWishlistClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -388,6 +391,13 @@ fun ProfileContent(
                     title = "Siparişlerim",
                     subtitle = "Siparişlerinizi yönetin",
                     onClick = onOrdersClick
+                )
+                
+                ProfileMenuItem(
+                    icon = Icons.Default.Favorite,
+                    title = "İstek Listem",
+                    subtitle = "İstek listenizi yönetin",
+                    onClick = onWishlistClick
                 )
 
                 ProfileMenuItem(

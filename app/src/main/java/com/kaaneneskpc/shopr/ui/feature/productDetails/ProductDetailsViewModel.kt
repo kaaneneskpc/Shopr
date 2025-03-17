@@ -10,7 +10,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ProductDetailsViewModel(private val useCase: AddToCartUseCase) : ViewModel() {
+class ProductDetailsViewModel(
+    private val addToCartUseCase: AddToCartUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow<ProductDetailsEvent>(ProductDetailsEvent.Nothing)
     val state = _state.asStateFlow()
@@ -18,7 +20,7 @@ class ProductDetailsViewModel(private val useCase: AddToCartUseCase) : ViewModel
     fun addProductToCart(product: UiProductModel) {
         viewModelScope.launch {
             _state.value = ProductDetailsEvent.Loading
-            val result = useCase.execute(
+            val result = addToCartUseCase.execute(
                 AddCartRequestModel(
                     product.id,
                     product.title,
@@ -38,8 +40,6 @@ class ProductDetailsViewModel(private val useCase: AddToCartUseCase) : ViewModel
             }
         }
     }
-
-
 }
 
 sealed class ProductDetailsEvent {

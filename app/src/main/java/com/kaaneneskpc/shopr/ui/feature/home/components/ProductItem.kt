@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kaaneneskpc.domain.model.Product
 import com.kaaneneskpc.domain.usecase.GetCartUseCase
+import com.kaaneneskpc.shopr.model.WishlistStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,8 +31,8 @@ import org.koin.java.KoinJavaComponent.inject
 @SuppressLint("DefaultLocale")
 @Composable
 fun ProductItem(product: Product, onClick: (Product) -> Unit) {
-    var isFavorite by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    var isInWishlist by remember { mutableStateOf(WishlistStore.isInWishlist(product.id)) }
     val getCartUseCase: GetCartUseCase by inject(GetCartUseCase::class.java)
     val coroutineScope = rememberCoroutineScope()
     
@@ -64,17 +66,31 @@ fun ProductItem(product: Product, onClick: (Product) -> Unit) {
                         .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
                     contentScale = ContentScale.Crop
                 )
-                
+
                 IconButton(
-                    onClick = { isFavorite = !isFavorite },
+                    onClick = {
+                        if (isInWishlist) {
+                            WishlistStore.removeFromWishlist(product.id)
+                            Toast.makeText(context, "Product removed from your wishlist", Toast.LENGTH_SHORT).show()
+                        } else {
+                            WishlistStore.addToWishlist(
+                                productId = product.id,
+                                productTitle = product.title,
+                                productPrice = product.price,
+                                productImageUrl = product.image
+                            )
+                            Toast.makeText(context, "Product added to your wish list", Toast.LENGTH_SHORT).show()
+                        }
+                        isInWishlist = !isInWishlist
+                    },
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(4.dp)
+                        .padding(8.dp)
                 ) {
                     Icon(
-                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                        contentDescription = "Favorite",
-                        tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                        imageVector = if (isInWishlist) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        contentDescription = if (isInWishlist) "Remove from My Wishlist" else "Add to My Wishlist",
+                        tint = if (isInWishlist) Color.Red else Color.Black
                     )
                 }
             }
@@ -118,7 +134,7 @@ fun ProductItem(product: Product, onClick: (Product) -> Unit) {
                                     launch(Dispatchers.Main) {
                                         Toast.makeText(
                                             context,
-                                            "${product.title} sepete eklendi",
+                                            "${product.title} added to cart",
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }
@@ -126,7 +142,7 @@ fun ProductItem(product: Product, onClick: (Product) -> Unit) {
                                     launch(Dispatchers.Main) {
                                         Toast.makeText(
                                             context,
-                                            "Ürün sepete eklenirken bir hata oluştu: ${e.message}",
+                                            "There was an error adding the product to the cart: ${e.message}",
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }
