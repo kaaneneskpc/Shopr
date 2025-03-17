@@ -97,7 +97,6 @@ object WishlistStore {
                 currentItems + newItem
             }
             
-            // Wishlist'i de güncelle
             updateWishlistItems()
             saveToPreferences()
         }
@@ -108,7 +107,6 @@ object WishlistStore {
             currentItems.filter { it.productId != productId }
         }
         
-        // Wishlist'i de güncelle
         updateWishlistItems()
         saveToPreferences()
     }

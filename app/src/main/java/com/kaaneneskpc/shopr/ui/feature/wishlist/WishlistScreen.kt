@@ -150,7 +150,6 @@ fun WishlistItemCard(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Ürün resmi
             if (item.productImageUrl != null) {
                 AsyncImage(
                     model = item.productImageUrl,
@@ -215,7 +214,7 @@ fun WishlistItemCard(
                 Spacer(modifier = Modifier.height(4.dp))
                 
                 Text(
-                    text = "Eklenme: ${item.dateAdded}",
+                    text = "Added: ${item.dateAdded}",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
