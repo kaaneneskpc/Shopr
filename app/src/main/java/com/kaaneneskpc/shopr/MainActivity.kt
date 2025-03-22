@@ -38,6 +38,9 @@ import com.kaaneneskpc.shopr.navigation.CartSummaryScreen
 import com.kaaneneskpc.shopr.navigation.EditProfileRoute
 import com.kaaneneskpc.shopr.navigation.HomeScreen
 import com.kaaneneskpc.shopr.navigation.OrdersScreen
+import com.kaaneneskpc.shopr.navigation.PaymentResultScreen
+import com.kaaneneskpc.shopr.navigation.PaymentScreen
+import com.kaaneneskpc.shopr.navigation.PaymentVerificationScreen
 import com.kaaneneskpc.shopr.navigation.ProductDetails
 import com.kaaneneskpc.shopr.navigation.ProfileScreen
 import com.kaaneneskpc.shopr.navigation.UserAddressRoute
@@ -49,6 +52,9 @@ import com.kaaneneskpc.shopr.navigation.navTypes.userProfileNavType
 import com.kaaneneskpc.shopr.ui.feature.cart.CartScreen
 import com.kaaneneskpc.shopr.ui.feature.home.HomeScreen
 import com.kaaneneskpc.shopr.ui.feature.orders.OrdersScreen
+import com.kaaneneskpc.shopr.ui.feature.payment.PaymentResultScreen
+import com.kaaneneskpc.shopr.ui.feature.payment.PaymentScreen
+import com.kaaneneskpc.shopr.ui.feature.payment.PaymentVerificationScreen
 import com.kaaneneskpc.shopr.ui.feature.productDetails.ProductDetailsScreen
 import com.kaaneneskpc.shopr.ui.feature.profile.ProfileScreen
 import com.kaaneneskpc.shopr.ui.feature.profile.edit.EditProfileScreen
@@ -192,6 +198,37 @@ fun MainScreen() {
                 composable<WishlistsScreen> {
                     WishlistScreen(
                         navController = navController
+                    )
+                }
+                composable<PaymentScreen> {
+                    val paymentViewModel = androidx.lifecycle.viewmodel.compose.viewModel<com.kaaneneskpc.shopr.ui.feature.payment.PaymentViewModel>()
+                    com.kaaneneskpc.shopr.ui.feature.payment.PaymentScreen(
+                        navController = navController,
+                        viewModel = paymentViewModel
+                    )
+                }
+                composable<PaymentVerificationScreen> {
+                    val paymentViewModel = navController.previousBackStackEntry?.let {
+                        androidx.lifecycle.viewmodel.compose.viewModel<com.kaaneneskpc.shopr.ui.feature.payment.PaymentViewModel>(
+                            viewModelStoreOwner = it
+                        )
+                    } ?: androidx.lifecycle.viewmodel.compose.viewModel()
+                    
+                    PaymentVerificationScreen(
+                        navController = navController,
+                        viewModel = paymentViewModel
+                    )
+                }
+                composable<PaymentResultScreen> {
+                    val paymentViewModel = navController.previousBackStackEntry?.let {
+                        androidx.lifecycle.viewmodel.compose.viewModel<com.kaaneneskpc.shopr.ui.feature.payment.PaymentViewModel>(
+                            viewModelStoreOwner = it
+                        )
+                    } ?: androidx.lifecycle.viewmodel.compose.viewModel()
+                    
+                    PaymentResultScreen(
+                        navController = navController,
+                        paymentViewModel = paymentViewModel
                     )
                 }
             }

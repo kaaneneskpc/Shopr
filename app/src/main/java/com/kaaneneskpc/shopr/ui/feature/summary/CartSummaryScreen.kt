@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.kaaneneskpc.shopr.model.UserAddress
+import com.kaaneneskpc.shopr.navigation.PaymentScreen
 import com.kaaneneskpc.shopr.navigation.UserAddressRoute
 import com.kaaneneskpc.shopr.navigation.UserAddressRouteWrapper
 import com.kaaneneskpc.shopr.ui.feature.summary.components.AddressBar
@@ -148,7 +149,9 @@ fun CartSummaryScreen(
                 }
                 
                 ElevatedButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { 
+                        navController.navigate(PaymentScreen)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),

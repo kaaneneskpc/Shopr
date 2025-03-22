@@ -34,3 +34,12 @@ data class UserAddressRoute(val userAddressWrapper: UserAddressRouteWrapper)
 @Serializable
 data class EditProfileRoute(val userProfile: UserProfile)
 
+@Serializable
+object PaymentScreen
+
+@Serializable
+object PaymentVerificationScreen
+
+@Serializable
+object PaymentResultScreen
+

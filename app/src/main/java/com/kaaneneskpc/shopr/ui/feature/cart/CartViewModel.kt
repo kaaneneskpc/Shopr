@@ -83,6 +83,30 @@ class CartViewModel(
             }
         }
     }
+    
+    // Ödeme tamamlandıktan sonra sepeti temizleme fonksiyonu
+    fun clearCart() {
+        viewModelScope.launch {
+            _uiState.value = CartEvent.Loading
+            // Mevcut sepet öğelerini al
+            cartUseCase.execute().let { result ->
+                when (result) {
+                    is ResultWrapper.Success -> {
+                        val items = result.value.data
+                        // Her bir öğeyi sepetten kaldır
+                        items.forEach { item ->
+                            deleteItem.execute(item.id, item.quantity)
+                        }
+                        // Sepeti yenile
+                        _uiState.value = CartEvent.Success(emptyList())
+                    }
+                    is ResultWrapper.Failure -> {
+                        _uiState.value = CartEvent.Error("Failed to clear cart")
+                    }
+                }
+            }
+        }
+    }
 }
 
 sealed class CartEvent {
