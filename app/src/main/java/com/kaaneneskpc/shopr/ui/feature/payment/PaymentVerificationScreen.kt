@@ -72,7 +72,6 @@ fun PaymentVerificationScreen(
     ) { isGranted ->
         hasNotificationPermission.value = isGranted
         if (isGranted) {
-            // Permission granted, send notification
             val randomCode = (100000..999999).random().toString()
             generatedCode.value = randomCode
             viewModel.updateVerificationCode(randomCode)
@@ -89,11 +88,9 @@ fun PaymentVerificationScreen(
         generatedCode.value = randomCode
         createNotificationChannel(context)
         
-        // Generated code'u ViewModele kaydediyoruz
         viewModel.updateVerificationCode(randomCode)
         android.util.Log.d("PaymentVerification", "Generated code: $randomCode")
 
-        // Check and request permission if needed
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (hasNotificationPermission.value) {
                 sendVerificationNotification(context, randomCode)
@@ -105,7 +102,6 @@ fun PaymentVerificationScreen(
         }
     }
     
-    // Permission dialog
     if (showPermissionDialog.value) {
         AlertDialog(
             onDismissRequest = { showPermissionDialog.value = false },
@@ -133,11 +129,9 @@ fun PaymentVerificationScreen(
     
     LaunchedEffect(verificationCode.value) {
         isCodeValidLength.value = verificationCode.value.length == 6
-        // Kullanıcının girdiği kodu ViewModel'e kaydet
         viewModel.updateUserEnteredCode(verificationCode.value)
     }
     
-    // Timer effect
     LaunchedEffect(Unit) {
         while (secondsLeft.value > 0) {
             delay(1000)
@@ -192,7 +186,6 @@ fun PaymentVerificationScreen(
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Bank logo and header
                 Box(
                     modifier = Modifier
                         .size(80.dp)
@@ -315,7 +308,6 @@ fun PaymentVerificationScreen(
                 
                 Spacer(modifier = Modifier.height(16.dp))
                 
-                // Resend code button
                 TextButton(
                     onClick = {
                         scope.launch {
@@ -344,7 +336,6 @@ fun PaymentVerificationScreen(
                 
                 Spacer(modifier = Modifier.weight(1f))
                 
-                // Security info
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -411,9 +402,8 @@ fun PaymentVerificationScreen(
                                         android.util.Log.d("PaymentVerification", "Code match successful!")
                                         scope.launch {
                                             isProcessing.value = true
-                                            delay(1500) // Simulate verification process
+                                            delay(1500)
                                             
-                                            // Manuel olarak sonuç oluştur ve PaymentViewModel'e set et
                                             val transactionId = "TX-" + (100000..999999).random().toString()
                                             val successResult = com.kaaneneskpc.shopr.model.PaymentResult(
                                                 isSuccess = true,
@@ -421,7 +411,6 @@ fun PaymentVerificationScreen(
                                                 transactionId = transactionId
                                             )
                                             
-                                            // ViewModeli güncelle
                                             viewModel.setPaymentResult(successResult)
                                             android.util.Log.d("PaymentVerification", "Payment result set: ${successResult.isSuccess}, ID: ${successResult.transactionId}")
                                             
@@ -459,7 +448,6 @@ fun PaymentVerificationScreen(
         }
     }
 
-    // Alert dialog'u eklemek için, showPermissionDialog altına ekleyebilirsiniz
     if (showAlert.value) {
         AlertDialog(
             onDismissRequest = { showAlert.value = false },
@@ -478,7 +466,6 @@ fun PaymentVerificationScreen(
     }
 }
 
-// Check if notification permission is granted
 private fun checkNotificationPermission(context: Context): Boolean {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         ContextCompat.checkSelfPermission(
@@ -486,11 +473,10 @@ private fun checkNotificationPermission(context: Context): Boolean {
             Manifest.permission.POST_NOTIFICATIONS
         ) == PackageManager.PERMISSION_GRANTED
     } else {
-        true // Always return true for Android versions before Tiramisu
+        true
     }
 }
 
-// Open app settings page
 private fun openAppSettings(context: Context) {
     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
         data = Uri.fromParts("package", context.packageName, null)
@@ -498,7 +484,6 @@ private fun openAppSettings(context: Context) {
     context.startActivity(intent)
 }
 
-// Create a notification channel for Android O and above
 private fun createNotificationChannel(context: Context) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val name = "Payment Verification"
@@ -512,7 +497,6 @@ private fun createNotificationChannel(context: Context) {
     }
 }
 
-// Send the verification code as a notification
 private fun sendVerificationNotification(context: Context, code: String) {
     val builder = NotificationCompat.Builder(context, "PAYMENT_VERIFICATION")
         .setSmallIcon(R.drawable.ic_done)
@@ -531,7 +515,6 @@ private fun sendVerificationNotification(context: Context, code: String) {
                 notify(1, builder.build())
             }
         } catch (e: Exception) {
-            // Handle exception (e.g., notification permission not granted)
             e.printStackTrace()
         }
     }

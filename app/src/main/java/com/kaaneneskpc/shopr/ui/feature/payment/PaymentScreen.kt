@@ -68,7 +68,6 @@ fun PaymentScreen(
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Modern card UI
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -130,8 +129,7 @@ fun PaymentScreen(
                 }
                 
                 Spacer(modifier = Modifier.height(24.dp))
-                
-                // Card holder name
+
                 OutlinedTextField(
                     value = paymentModel.value.cardHolderName,
                     onValueChange = { 
@@ -151,8 +149,7 @@ fun PaymentScreen(
                 )
                 
                 Spacer(modifier = Modifier.height(16.dp))
-                
-                // Card number
+
                 OutlinedTextField(
                     value = paymentModel.value.cardNumber,
                     onValueChange = { 
@@ -184,8 +181,7 @@ fun PaymentScreen(
                 )
                 
                 Spacer(modifier = Modifier.height(16.dp))
-                
-                // Row for expiry date and CVV
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -240,7 +236,6 @@ fun PaymentScreen(
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
-                // Card security message
                 Text(
                     text = "Your card information is encrypted and secure",
                     style = MaterialTheme.typography.bodySmall,
@@ -250,8 +245,7 @@ fun PaymentScreen(
                 )
                 
                 Spacer(modifier = Modifier.weight(1f))
-                
-                // Proceed button with animation
+
                 AnimatedVisibility(
                     visible = formValid.value,
                     enter = fadeIn(),
@@ -276,8 +270,7 @@ fun PaymentScreen(
                         )
                     }
                 }
-                
-                // Disabled button when form is invalid
+
                 AnimatedVisibility(
                     visible = !formValid.value,
                     enter = fadeIn(),
@@ -341,12 +334,10 @@ private fun isFormValid(paymentModel: PaymentModel): Boolean {
             paymentModel.cvv.length == 3
 }
 
-// Offset translator for credit card formatting
 private fun creditCardOffsetTranslator(text: String): androidx.compose.ui.text.input.OffsetMapping {
     val spacesIndices = mutableListOf<Int>()
     val digitsOnly = text.replace(" ", "")
-    
-    // Find indices where spaces will be added (after every 4 digits)
+
     for (i in 1 until digitsOnly.length) {
         if (i % 4 == 0) {
             spacesIndices.add(i)
@@ -355,13 +346,11 @@ private fun creditCardOffsetTranslator(text: String): androidx.compose.ui.text.i
     
     return object : androidx.compose.ui.text.input.OffsetMapping {
         override fun originalToTransformed(offset: Int): Int {
-            // Count how many spaces are before the given offset
             val spacesBeforeOffset = spacesIndices.count { it < offset }
             return offset + spacesBeforeOffset
         }
 
         override fun transformedToOriginal(offset: Int): Int {
-            // Find the max number of spaces that could be before the offset
             var spacesBeforeOffset = 0
             for (spaceIndex in spacesIndices) {
                 val transformedSpaceIndex = spaceIndex + spacesBeforeOffset

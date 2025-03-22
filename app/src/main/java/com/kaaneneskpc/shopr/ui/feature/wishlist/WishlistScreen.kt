@@ -220,7 +220,6 @@ fun WishlistItemCard(
                 )
             }
             
-            // İşlem butonları
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally

@@ -33,12 +33,10 @@ fun PaymentResultScreen(
 ) {
     val paymentResult by paymentViewModel.paymentResult.collectAsState()
     
-    // Debug log
     LaunchedEffect(Unit) {
         android.util.Log.d("PaymentResultScreen", "Payment result: ${paymentResult?.isSuccess}, Message: ${paymentResult?.message}, Transaction ID: ${paymentResult?.transactionId}")
     }
     
-    // Sabit bir başarılı ödeme sonucu oluştur (fallback)
     val fallbackResult = remember {
         com.kaaneneskpc.shopr.model.PaymentResult(
             isSuccess = true,
@@ -47,10 +45,8 @@ fun PaymentResultScreen(
         )
     }
     
-    // paymentResult null ise fallback kullan
     val displayResult = paymentResult ?: fallbackResult
     
-    // Ödeme başarılıysa sepeti temizleme işlemi
     LaunchedEffect(displayResult) {
         if (displayResult.isSuccess) {
             android.util.Log.d("PaymentResultScreen", "Processing successful payment, clearing cart")

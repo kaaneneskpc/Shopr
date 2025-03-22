@@ -78,7 +78,7 @@ fun SearchBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .heightIn(max = 300.dp), // Strict height constraint
+                    .heightIn(max = 300.dp),
                 shape = RoundedCornerShape(12.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
