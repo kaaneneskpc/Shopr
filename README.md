@@ -24,6 +24,9 @@ This repo inspried from [furqanullah717](https://github.com/furqanullah717/Shopp
 # Address
 <img src="https://github.com/user-attachments/assets/49c41937-6f1b-4aa4-b7bb-b271ad00e495" height = "600px"/> <img src="https://github.com/user-attachments/assets/fcebccfe-6430-4e62-b320-b67f9a0a0c0b" height = "600px"/>
 
+# Payment
+
+<img src="https://github.com/user-attachments/assets/8712d58f-21a8-4532-921a-d923da327997" height = "600px"/> <img src="https://github.com/user-attachments/assets/ce9e45c5-89d1-49b7-b862-f0031b37340a" height = "600px"/> <img src="https://github.com/user-attachments/assets/f9ba6c46-d2c0-4230-bbf6-107186c9e774" height = "600px"/>
 
 ## 📌 Features
 
