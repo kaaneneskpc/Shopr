@@ -37,18 +37,22 @@ import com.kaaneneskpc.shopr.navigation.CartScreen
 import com.kaaneneskpc.shopr.navigation.CartSummaryScreen
 import com.kaaneneskpc.shopr.navigation.EditProfileRoute
 import com.kaaneneskpc.shopr.navigation.HomeScreen
+import com.kaaneneskpc.shopr.navigation.LoginScreen
 import com.kaaneneskpc.shopr.navigation.OrdersScreen
 import com.kaaneneskpc.shopr.navigation.PaymentResultScreen
 import com.kaaneneskpc.shopr.navigation.PaymentScreen
 import com.kaaneneskpc.shopr.navigation.PaymentVerificationScreen
 import com.kaaneneskpc.shopr.navigation.ProductDetails
 import com.kaaneneskpc.shopr.navigation.ProfileScreen
+import com.kaaneneskpc.shopr.navigation.RegisterScreen
 import com.kaaneneskpc.shopr.navigation.UserAddressRoute
 import com.kaaneneskpc.shopr.navigation.UserAddressRouteWrapper
 import com.kaaneneskpc.shopr.navigation.WishlistsScreen
 import com.kaaneneskpc.shopr.navigation.navTypes.productNavType
 import com.kaaneneskpc.shopr.navigation.navTypes.userAddressNavType
 import com.kaaneneskpc.shopr.navigation.navTypes.userProfileNavType
+import com.kaaneneskpc.shopr.ui.feature.account.login.LoginScreen
+import com.kaaneneskpc.shopr.ui.feature.account.register.RegisterScreen
 import com.kaaneneskpc.shopr.ui.feature.cart.CartScreen
 import com.kaaneneskpc.shopr.ui.feature.home.HomeScreen
 import com.kaaneneskpc.shopr.ui.feature.orders.OrdersScreen
@@ -87,28 +91,28 @@ fun MainScreen() {
         BottomNavItems.Order,
         BottomNavItems.Profile
     )
-    
+
     val bottomNavRoutes = bottomNavItems.map { it.route::class.qualifiedName }
-    
+
     val shouldShowBottomNav = rememberSaveable { mutableStateOf(true) }
-    
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    
+
     shouldShowBottomNav.value = currentDestination?.route?.let { route ->
         bottomNavRoutes.contains(route.substringBefore("?"))
     } ?: false
-    
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             AnimatedVisibility(visible = shouldShowBottomNav.value, enter = fadeIn()) {
                 NavigationBar {
                     bottomNavItems.forEach { item ->
-                        val isSelected = currentDestination?.hierarchy?.any { 
-                            it.route?.substringBefore("?") == item.route::class.qualifiedName 
+                        val isSelected = currentDestination?.hierarchy?.any {
+                            it.route?.substringBefore("?") == item.route::class.qualifiedName
                         } ?: false
-                        
+
                         NavigationBarItem(
                             selected = isSelected,
                             onClick = {
@@ -119,9 +123,11 @@ fun MainScreen() {
                                     launchSingleTop = true
                                     restoreState = true
                                 }
-                                
+
                                 if (item is BottomNavItems.Cart) {
-                                    val cartViewModel: com.kaaneneskpc.shopr.ui.feature.cart.CartViewModel by org.koin.java.KoinJavaComponent.inject(com.kaaneneskpc.shopr.ui.feature.cart.CartViewModel::class.java)
+                                    val cartViewModel: com.kaaneneskpc.shopr.ui.feature.cart.CartViewModel by org.koin.java.KoinJavaComponent.inject(
+                                        com.kaaneneskpc.shopr.ui.feature.cart.CartViewModel::class.java
+                                    )
                                     cartViewModel.refreshCart()
                                 }
                             },
@@ -152,7 +158,22 @@ fun MainScreen() {
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            NavHost(navController = navController, startDestination = HomeScreen) {
+            NavHost(
+                navController = navController,
+                startDestination = if (ShoprSession.getUser() != null) {
+                    HomeScreen
+                } else {
+                    LoginScreen
+                }
+            ) {
+                composable<LoginScreen> {
+                    shouldShowBottomNav.value = false
+                    LoginScreen(navController)
+                }
+                composable<RegisterScreen> {
+                    shouldShowBottomNav.value = false
+                    RegisterScreen(navController)
+                }
                 composable<HomeScreen> {
                     HomeScreen(navController)
                 }
@@ -201,7 +222,8 @@ fun MainScreen() {
                     )
                 }
                 composable<PaymentScreen> {
-                    val paymentViewModel = androidx.lifecycle.viewmodel.compose.viewModel<com.kaaneneskpc.shopr.ui.feature.payment.PaymentViewModel>()
+                    val paymentViewModel =
+                        androidx.lifecycle.viewmodel.compose.viewModel<com.kaaneneskpc.shopr.ui.feature.payment.PaymentViewModel>()
                     com.kaaneneskpc.shopr.ui.feature.payment.PaymentScreen(
                         navController = navController,
                         viewModel = paymentViewModel
@@ -213,7 +235,7 @@ fun MainScreen() {
                             viewModelStoreOwner = it
                         )
                     } ?: androidx.lifecycle.viewmodel.compose.viewModel()
-                    
+
                     PaymentVerificationScreen(
                         navController = navController,
                         viewModel = paymentViewModel
@@ -225,7 +247,7 @@ fun MainScreen() {
                             viewModelStoreOwner = it
                         )
                     } ?: androidx.lifecycle.viewmodel.compose.viewModel()
-                    
+
                     PaymentResultScreen(
                         navController = navController,
                         paymentViewModel = paymentViewModel
@@ -239,7 +261,9 @@ fun MainScreen() {
 sealed class BottomNavItems(val route: Any, val title: String, val icon: Int) {
     data object Home : BottomNavItems(HomeScreen, "Home", icon = R.drawable.ic_home)
     data object Cart : BottomNavItems(CartScreen, "Cart", icon = R.drawable.ic_cart)
-    data object Wishlist : BottomNavItems(WishlistsScreen, "Wishlist", icon = R.drawable.ic_favorite)
+    data object Wishlist :
+        BottomNavItems(WishlistsScreen, "Wishlist", icon = R.drawable.ic_favorite)
+
     data object Order : BottomNavItems(OrdersScreen, "Orders", icon = R.drawable.ic_orders)
     data object Profile : BottomNavItems(ProfileScreen, "Profile", icon = R.drawable.ic_profile_bn)
 }

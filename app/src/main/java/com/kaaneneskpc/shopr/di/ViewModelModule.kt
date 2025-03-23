@@ -1,5 +1,7 @@
 package com.kaaneneskpc.shopr.di
 
+import com.kaaneneskpc.shopr.ui.feature.account.login.LoginViewModel
+import com.kaaneneskpc.shopr.ui.feature.account.register.RegisterViewModel
 import com.kaaneneskpc.shopr.ui.feature.allproducts.AllProductsViewModel
 import com.kaaneneskpc.shopr.ui.feature.cart.CartViewModel
 import com.kaaneneskpc.shopr.ui.feature.home.HomeViewModel
@@ -18,4 +20,6 @@ val viewModelModule = module {
     viewModel { OrdersViewModel(get()) }
     viewModel { ProfileViewModel(get(), get(), get()) }
     viewModel { AllProductsViewModel(get()) }
+    viewModel { LoginViewModel(get()) }
+    viewModel { RegisterViewModel(get()) }
 }

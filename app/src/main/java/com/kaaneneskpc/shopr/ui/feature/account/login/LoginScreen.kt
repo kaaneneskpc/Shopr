@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.kaaneneskpc.shopr.R
 import com.kaaneneskpc.shopr.navigation.HomeScreen
+import com.kaaneneskpc.shopr.navigation.RegisterScreen
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -51,7 +52,6 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = koinVi
 
             is LoginState.Error -> {
                 Text(text = state.message)
-                // Show error message
             }
 
             is LoginState.Loading -> {

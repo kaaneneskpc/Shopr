@@ -10,6 +10,7 @@ import com.kaaneneskpc.data.model.response.category.CategoryListResponse
 import com.kaaneneskpc.data.model.response.orders.OrdersListResponse
 import com.kaaneneskpc.data.model.response.orders.PlaceOrderResponse
 import com.kaaneneskpc.data.model.response.product.ProductListResponse
+import com.kaaneneskpc.data.model.response.user.UserAuthResponse
 import com.kaaneneskpc.data.model.response.user.UserResponse
 import com.kaaneneskpc.domain.model.AddressDomainModel
 import com.kaaneneskpc.domain.model.CartItemModel
@@ -130,8 +131,8 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
         return makeWebRequest(url = url,
             method = HttpMethod.Post,
             body = LoginRequest(email, password),
-            mapper = { user: UserResponse ->
-                user.toDomainModel()
+            mapper = { user: UserAuthResponse ->
+                user.data.toDomainModel()
             })
     }
 
@@ -144,8 +145,8 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
         return makeWebRequest(url = url,
             method = HttpMethod.Post,
             body = RegisterRequest(email, password, name),
-            mapper = { user: UserResponse ->
-                user.toDomainModel()
+            mapper = { user: UserAuthResponse ->
+                user.data.toDomainModel()
             })
     }
 
