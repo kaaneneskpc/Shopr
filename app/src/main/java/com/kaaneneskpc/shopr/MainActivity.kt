@@ -175,33 +175,41 @@ fun MainScreen() {
                     RegisterScreen(navController)
                 }
                 composable<HomeScreen> {
+                    shouldShowBottomNav.value = true
                     HomeScreen(navController)
                 }
                 composable<CartScreen> {
+                    shouldShowBottomNav.value = true
                     CartScreen(navController)
                 }
                 composable<OrdersScreen> {
+                    shouldShowBottomNav.value = true
                     OrdersScreen()
                 }
                 composable<ProfileScreen> {
+                    shouldShowBottomNav.value = true
                     ProfileScreen(navController)
                 }
                 composable<CartSummaryScreen> {
+                    shouldShowBottomNav.value = true
                     CartSummaryScreen(navController = navController)
                 }
                 composable<AllProductsScreen> {
+                    shouldShowBottomNav.value = true
                     com.kaaneneskpc.shopr.ui.feature.allproducts.AllProductsScreen(navController = navController)
                 }
                 composable<ProductDetails>(
                     typeMap = mapOf(typeOf<UiProductModel>() to productNavType)
                 ) { typeMap ->
                     val productRoute = typeMap.toRoute<ProductDetails>()
+                    shouldShowBottomNav.value = true
                     ProductDetailsScreen(navController, productRoute.product)
                 }
                 composable<UserAddressRoute>(
                     typeMap = mapOf(typeOf<UserAddressRouteWrapper>() to userAddressNavType)
                 ) { typeMap ->
                     val userAddressRoute = typeMap.toRoute<UserAddressRoute>()
+                    shouldShowBottomNav.value = true
                     UserAddressScreen(
                         navController = navController,
                         userAddress = userAddressRoute.userAddressWrapper.userAddress
@@ -211,17 +219,20 @@ fun MainScreen() {
                     typeMap = mapOf(typeOf<UserProfile>() to userProfileNavType)
                 ) { typeMap ->
                     val editProfileRoute = typeMap.toRoute<EditProfileRoute>()
+                    shouldShowBottomNav.value = true
                     EditProfileScreen(
                         navController = navController,
                         userProfile = editProfileRoute.userProfile
                     )
                 }
                 composable<WishlistsScreen> {
+                    shouldShowBottomNav.value = true
                     WishlistScreen(
                         navController = navController
                     )
                 }
                 composable<PaymentScreen> {
+                    shouldShowBottomNav.value = true
                     val paymentViewModel =
                         androidx.lifecycle.viewmodel.compose.viewModel<com.kaaneneskpc.shopr.ui.feature.payment.PaymentViewModel>()
                     com.kaaneneskpc.shopr.ui.feature.payment.PaymentScreen(
@@ -230,6 +241,7 @@ fun MainScreen() {
                     )
                 }
                 composable<PaymentVerificationScreen> {
+                    shouldShowBottomNav.value = true
                     val paymentViewModel = navController.previousBackStackEntry?.let {
                         androidx.lifecycle.viewmodel.compose.viewModel<com.kaaneneskpc.shopr.ui.feature.payment.PaymentViewModel>(
                             viewModelStoreOwner = it
@@ -242,6 +254,7 @@ fun MainScreen() {
                     )
                 }
                 composable<PaymentResultScreen> {
+                    shouldShowBottomNav.value = true
                     val paymentViewModel = navController.previousBackStackEntry?.let {
                         androidx.lifecycle.viewmodel.compose.viewModel<com.kaaneneskpc.shopr.ui.feature.payment.PaymentViewModel>(
                             viewModelStoreOwner = it
