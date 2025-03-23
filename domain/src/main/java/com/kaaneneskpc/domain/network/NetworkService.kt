@@ -7,6 +7,7 @@ import com.kaaneneskpc.domain.model.CartSummary
 import com.kaaneneskpc.domain.model.CategoryListModel
 import com.kaaneneskpc.domain.model.OrdersListModel
 import com.kaaneneskpc.domain.model.ProductListModel
+import com.kaaneneskpc.domain.model.UserDomainModel
 import com.kaaneneskpc.domain.model.request.AddCartRequestModel
 
 interface NetworkService {
@@ -19,6 +20,8 @@ interface NetworkService {
     suspend fun getCartSummary(userId: Int): ResultWrapper<CartSummary>
     suspend fun placeOrder(address: AddressDomainModel, userId: Int): ResultWrapper<Long>
     suspend fun getOrderList(): ResultWrapper<OrdersListModel>
+    suspend fun login(email: String, password: String): ResultWrapper<UserDomainModel>
+    suspend fun register(email: String, password: String, name: String): ResultWrapper<UserDomainModel>
 }
 
 sealed class ResultWrapper<out T> {

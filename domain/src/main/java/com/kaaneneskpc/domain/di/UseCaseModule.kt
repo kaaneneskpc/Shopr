@@ -7,8 +7,10 @@ import com.kaaneneskpc.domain.usecase.GetCartUseCase
 import com.kaaneneskpc.domain.usecase.GetCategoriesUseCase
 import com.kaaneneskpc.domain.usecase.GetProductsUseCase
 import com.kaaneneskpc.domain.usecase.GetUserProfileUseCase
+import com.kaaneneskpc.domain.usecase.LoginUseCase
 import com.kaaneneskpc.domain.usecase.OrderListUseCase
 import com.kaaneneskpc.domain.usecase.PlaceOrderUseCase
+import com.kaaneneskpc.domain.usecase.RegisterUseCase
 import com.kaaneneskpc.domain.usecase.UpdatePasswordUseCase
 import com.kaaneneskpc.domain.usecase.UpdateQuantityUseCase
 import com.kaaneneskpc.domain.usecase.UpdateUserProfileUseCase
@@ -28,4 +30,6 @@ val useCaseModule = module {
     factory { GetUserProfileUseCase(get()) }
     factory { UpdateUserProfileUseCase(get()) }
     factory { UpdatePasswordUseCase(get()) }
+    factory { LoginUseCase(get()) }
+    factory { RegisterUseCase(get()) }
 }

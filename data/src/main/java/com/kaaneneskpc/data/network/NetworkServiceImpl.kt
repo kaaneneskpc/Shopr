@@ -2,12 +2,15 @@ package com.kaaneneskpc.data.network
 
 import com.kaaneneskpc.data.model.request.AddToCartRequest
 import com.kaaneneskpc.data.model.request.AddressDataModel
+import com.kaaneneskpc.data.model.request.LoginRequest
+import com.kaaneneskpc.data.model.request.RegisterRequest
 import com.kaaneneskpc.data.model.response.cart.CartResponse
 import com.kaaneneskpc.data.model.response.cart.CartSummaryResponse
 import com.kaaneneskpc.data.model.response.category.CategoryListResponse
 import com.kaaneneskpc.data.model.response.orders.OrdersListResponse
 import com.kaaneneskpc.data.model.response.orders.PlaceOrderResponse
 import com.kaaneneskpc.data.model.response.product.ProductListResponse
+import com.kaaneneskpc.data.model.response.user.UserResponse
 import com.kaaneneskpc.domain.model.AddressDomainModel
 import com.kaaneneskpc.domain.model.CartItemModel
 import com.kaaneneskpc.domain.model.CartModel
@@ -15,6 +18,7 @@ import com.kaaneneskpc.domain.model.CartSummary
 import com.kaaneneskpc.domain.model.CategoryListModel
 import com.kaaneneskpc.domain.model.OrdersListModel
 import com.kaaneneskpc.domain.model.ProductListModel
+import com.kaaneneskpc.domain.model.UserDomainModel
 import com.kaaneneskpc.domain.model.request.AddCartRequestModel
 import com.kaaneneskpc.domain.network.NetworkService
 import com.kaaneneskpc.domain.network.ResultWrapper
@@ -118,6 +122,30 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
             method = HttpMethod.Get,
             mapper = { ordersResponse: OrdersListResponse ->
                 ordersResponse.toDomainResponse()
+            })
+    }
+
+    override suspend fun login(email: String, password: String): ResultWrapper<UserDomainModel> {
+        val url = "$baseUrl/login"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Post,
+            body = LoginRequest(email, password),
+            mapper = { user: UserResponse ->
+                user.toDomainModel()
+            })
+    }
+
+    override suspend fun register(
+        email: String,
+        password: String,
+        name: String
+    ): ResultWrapper<UserDomainModel> {
+        val url = "$baseUrl/signup"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Post,
+            body = RegisterRequest(email, password, name),
+            mapper = { user: UserResponse ->
+                user.toDomainModel()
             })
     }
 
