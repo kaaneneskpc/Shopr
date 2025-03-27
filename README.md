@@ -6,28 +6,6 @@
 
 ---
 
-## Inspired (Credit By)
-
-This repo inspried from [furqanullah717](https://github.com/furqanullah717/Shopper-compose)
-
-## 📷 Screenshoots
-
-# Home
-<img src="https://github.com/user-attachments/assets/c905b362-1346-469f-88e0-cb42f86697a0" height = "600px"/> <img src="https://github.com/user-attachments/assets/d62c76cb-248f-49cb-98c8-e5ae9145f0e3" height = "600px"/> <img src="https://github.com/user-attachments/assets/5e00fce2-c639-40f4-8393-88d89d4d6dca" height = "600px"/>
-
-# Cart
-<img src="https://github.com/user-attachments/assets/a75b21ed-f773-45f6-85eb-e379375a8e49" height = "600px"/> <img src="https://github.com/user-attachments/assets/ccd26c61-f522-4697-9f0e-030801391994" height = "600px"/>
-
-# Orders And Profile
-<img src="https://github.com/user-attachments/assets/3d22124e-7beb-4f07-b274-c28999e09ed3" height = "600px"/> <img src="https://github.com/user-attachments/assets/ed0e4032-1236-44d7-a22d-03e637c226e2" height = "600px"/>
-
-# Address
-<img src="https://github.com/user-attachments/assets/49c41937-6f1b-4aa4-b7bb-b271ad00e495" height = "600px"/> <img src="https://github.com/user-attachments/assets/fcebccfe-6430-4e62-b320-b67f9a0a0c0b" height = "600px"/>
-
-# Payment
-
-<img src="https://github.com/user-attachments/assets/8712d58f-21a8-4532-921a-d923da327997" height = "600px"/> <img src="https://github.com/user-attachments/assets/ce9e45c5-89d1-49b7-b862-f0031b37340a" height = "600px"/> <img src="https://github.com/user-attachments/assets/f9ba6c46-d2c0-4230-bbf6-107186c9e774" height = "600px"/>
-
 ## 📌 Features
 
 - 📦 **Multi-Module Architecture** for improved maintainability.
@@ -73,6 +51,28 @@ This repo inspried from [furqanullah717](https://github.com/furqanullah717/Shopp
 
 ---
 
+---
+
+## 📷 Screenshoots
+
+# Home
+<img src="https://github.com/user-attachments/assets/c905b362-1346-469f-88e0-cb42f86697a0" height = "600px"/> <img src="https://github.com/user-attachments/assets/d62c76cb-248f-49cb-98c8-e5ae9145f0e3" height = "600px"/> <img src="https://github.com/user-attachments/assets/5e00fce2-c639-40f4-8393-88d89d4d6dca" height = "600px"/>
+
+# Cart
+<img src="https://github.com/user-attachments/assets/a75b21ed-f773-45f6-85eb-e379375a8e49" height = "600px"/> <img src="https://github.com/user-attachments/assets/ccd26c61-f522-4697-9f0e-030801391994" height = "600px"/>
+
+# Orders And Profile
+<img src="https://github.com/user-attachments/assets/3d22124e-7beb-4f07-b274-c28999e09ed3" height = "600px"/> <img src="https://github.com/user-attachments/assets/ed0e4032-1236-44d7-a22d-03e637c226e2" height = "600px"/>
+
+# Address
+<img src="https://github.com/user-attachments/assets/49c41937-6f1b-4aa4-b7bb-b271ad00e495" height = "600px"/> <img src="https://github.com/user-attachments/assets/fcebccfe-6430-4e62-b320-b67f9a0a0c0b" height = "600px"/>
+
+# Payment
+
+<img src="https://github.com/user-attachments/assets/8712d58f-21a8-4532-921a-d923da327997" height = "600px"/> <img src="https://github.com/user-attachments/assets/ce9e45c5-89d1-49b7-b862-f0031b37340a" height = "600px"/> <img src="https://github.com/user-attachments/assets/f9ba6c46-d2c0-4230-bbf6-107186c9e774" height = "600px"/>
+
+---
+
 ## 🛠️ Installation & Setup
 
 ### **Prerequisites**
@@ -113,6 +113,12 @@ Contributions are welcome! 🎉 Feel free to fork the repository and submit a Pu
 ## 📝 License
 
 This project is open-source and available under the [MIT License](LICENSE).
+
+---
+
+## Inspired (Credit By)
+
+This repo inspried from [furqanullah717](https://github.com/furqanullah717/Shopper-compose)
 
 ---
 
